@@ -1,0 +1,33 @@
+.access-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.access-tile {
+  aspect-ratio: 1;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 0.5625rem;
+  text-align: center;
+  padding: 4px;
+  background: #f0f0f0;
+}
+
+.access-tile--unlocked {
+  background: var(--color-surface);
+}
+
+.access-tile__icon {
+  font-size: 0.875rem;
+  line-height: 1;
+}
+
+.access-tile__label {
+  line-height: 1.1;
+}

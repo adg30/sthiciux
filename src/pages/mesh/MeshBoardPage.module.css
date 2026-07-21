@@ -1,0 +1,62 @@
+.network {
+  padding: 12px;
+  min-height: 80px;
+}
+
+.networkSvg {
+  width: 100%;
+  height: 60px;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  text-align: left;
+  min-height: var(--touch-min);
+}
+
+.thumb {
+  width: 48px;
+  height: 48px;
+  background: #d0d0d0;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.name {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.meta {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.plus {
+  font-size: 1.25rem;
+  font-weight: 300;
+}

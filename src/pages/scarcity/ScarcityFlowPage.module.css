@@ -1,0 +1,73 @@
+.centered {
+  align-items: center;
+  justify-content: center;
+}
+
+.stabilizingText {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 16px 0 0;
+}
+
+.hint {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  padding: 12px;
+  border: 1px dashed var(--color-border-light);
+  border-radius: var(--radius-sm);
+  margin: 0;
+}
+
+.result {
+  text-align: center;
+  padding: 24px 16px;
+}
+
+.resultTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+
+.resultSub {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.actions {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.primaryBtn {
+  width: 100%;
+  min-height: var(--touch-min);
+  padding: 12px 20px;
+  background: var(--color-fill);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.secondaryBtn {
+  width: 100%;
+  min-height: var(--touch-min);
+  padding: 12px 20px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1.5px dashed var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}

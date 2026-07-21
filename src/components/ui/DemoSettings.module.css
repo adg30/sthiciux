@@ -1,0 +1,61 @@
+.demo-settings {
+  position: fixed;
+  top: 8px;
+  right: 8px;
+  z-index: 200;
+  max-width: calc(var(--app-max-width) - 16px);
+}
+
+.demo-settings__toggle {
+  background: #ff6b35;
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  text-transform: uppercase;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.demo-settings__panel {
+  margin-top: 8px;
+  background: #fff;
+  border: 2px dashed #ff6b35;
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  font-size: 0.75rem;
+}
+
+.demo-settings__title {
+  font-weight: 700;
+  margin: 0 0 8px;
+  color: #ff6b35;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+}
+
+.demo-settings__options {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.demo-settings__option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.demo-settings__option input {
+  accent-color: #ff6b35;
+}
+
+.demo-settings__note {
+  margin: 8px 0 0;
+  font-size: 0.625rem;
+  color: var(--color-text-muted);
+}

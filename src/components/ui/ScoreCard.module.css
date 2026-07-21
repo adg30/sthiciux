@@ -1,0 +1,42 @@
+.score-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.score-card__label {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.score-card__value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.score-card__status {
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  margin-top: 4px;
+}
+
+.score-card__level {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+.score-card--clickable {
+  cursor: pointer;
+  transition: box-shadow 0.15s ease;
+}
+
+.score-card--clickable:hover {
+  box-shadow: var(--shadow-card);
+}
+
+.score-card--clickable:focus-visible {
+  outline: 2px solid #111;
+  outline-offset: 2px;
+}

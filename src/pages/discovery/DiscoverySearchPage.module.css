@@ -1,0 +1,39 @@
+.search {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  font-size: 0.875rem;
+}
+
+.filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.chip {
+  padding: 8px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-surface);
+  font-size: 0.75rem;
+  cursor: pointer;
+  min-height: 36px;
+}
+
+.recent {
+  min-height: 120px;
+}
+
+.recentTitle {
+  font-size: 0.875rem;
+  margin: 0 0 12px;
+}
+
+.recentPlaceholder {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  margin: 0;
+}

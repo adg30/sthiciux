@@ -1,0 +1,31 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.score {
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.status {
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.message {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  margin: 0;
+  padding: 12px;
+  border: 1px dashed var(--color-border-light);
+  border-radius: var(--radius-sm);
+}
+
+.footer {
+  margin-top: auto;
+  padding-top: 8px;
+}

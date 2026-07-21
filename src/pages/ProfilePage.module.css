@@ -1,0 +1,63 @@
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 24px;
+}
+
+.avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 2px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.name {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.role {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  margin: 0;
+  text-align: center;
+}
+
+.scoreLabel {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  margin: 0 0 4px;
+}
+
+.scoreValue {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+
+.status {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  margin: 8px 0 0;
+}
+
+.activityTitle {
+  font-size: 0.875rem;
+  margin: 0 0 8px;
+}
+
+.activityList {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}

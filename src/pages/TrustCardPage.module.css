@@ -1,0 +1,35 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 32px 24px;
+  min-height: 320px;
+  justify-content: center;
+}
+
+.qr {
+  width: 140px;
+  height: 140px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: #e8e8e8;
+}
+
+.divider {
+  width: 80%;
+  border-top: 1px dashed var(--color-border-light);
+}
+
+.name {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
