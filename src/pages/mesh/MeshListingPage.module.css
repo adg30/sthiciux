@@ -1,0 +1,65 @@
+.listing {
+  padding: 0;
+  overflow: hidden;
+}
+
+.hero {
+  height: 150px;
+  display: grid;
+  place-items: center;
+  background: #d0d0d0;
+}
+
+.hero span {
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  border: 2px solid #111;
+  border-radius: 50%;
+  background: #fff;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.content {
+  padding: 16px;
+}
+
+.badge {
+  display: inline-block;
+  margin-bottom: 12px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 0.625rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.badge--connected {
+  background: #111;
+  color: #fff;
+}
+
+.badge--pending {
+  border: 1px dashed #111;
+}
+
+.badge--anonymous {
+  background: #ddd;
+}
+
+.identity {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.actions {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

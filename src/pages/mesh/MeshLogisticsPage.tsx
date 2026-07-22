@@ -1,11 +1,13 @@
 import { useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { Button } from '../../components/ui/Button'
 import styles from './MeshLogisticsPage.module.css'
 
 export function MeshLogisticsPage() {
   const { itemId } = useParams()
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const isExistingConnection = searchParams.get('existing') === '1'
   const [pickup, setPickup] = useState('')
   const [time, setTime] = useState('')
 
@@ -42,7 +44,7 @@ export function MeshLogisticsPage() {
         <Button
           fullWidth
           disabled={!pickup.trim() || !time.trim()}
-          onClick={() => navigate(`/mesh/complete/${itemId}`)}
+          onClick={() => navigate(`/mesh/complete/${itemId}${isExistingConnection ? '?existing=1' : ''}`)}
         >
           Confirm Details
         </Button>

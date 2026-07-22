@@ -105,7 +105,56 @@ export const MOCK_SUPPLIERS = [
 ]
 
 export const MESH_ITEMS = [
-  { id: 'm1', name: 'Cooking oil', distance: '~2 km', business: 'Sari-Sari Provisions' },
-  { id: 'm2', name: 'Rice (25kg)', distance: '~1 km', business: 'Grain Hub MSME' },
-  { id: 'm3', name: 'Packaging boxes', distance: '~3 km', business: 'PackRight Trading' },
+  {
+    id: 'm1',
+    businessId: 'b1',
+    name: 'Cooking oil',
+    distance: '~2 km',
+    business: 'Sari-Sari Provisions',
+    relationship: 'connected',
+  },
+  {
+    id: 'm2',
+    businessId: 'b2',
+    name: 'Rice (25kg)',
+    distance: '~1 km',
+    business: 'Grain Hub MSME',
+    relationship: 'pending',
+  },
+  {
+    id: 'm3',
+    businessId: 'b3',
+    name: 'Packaging boxes',
+    distance: '~3 km',
+    business: 'PackRight Trading',
+    relationship: 'anonymous',
+  },
+  {
+    id: 'm4',
+    businessId: 'b4',
+    name: 'Bottled water',
+    distance: '~2.5 km',
+    business: 'ClearSpring Retail',
+    relationship: 'anonymous',
+  },
+  {
+    id: 'm5',
+    businessId: 'b5',
+    name: 'Delivery crates',
+    distance: '~4 km',
+    business: 'North Route Logistics',
+    relationship: 'anonymous',
+  },
+] as const
+
+export type MeshRelationship = (typeof MESH_ITEMS)[number]['relationship']
+
+export const COMM_CONTACTS = [
+  { id: 's1', name: 'Barangay Fresh Supply Co.', detail: 'Grocery supplier · 1.2 km', source: 'Supplier Network' },
+  ...MESH_ITEMS.filter((item) => item.relationship === 'connected').map((item) => ({
+    id: item.businessId,
+    name: item.business,
+    detail: `${item.name} · ${item.distance}`,
+    source: 'Mesh Connection',
+  })),
 ]

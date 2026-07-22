@@ -36,7 +36,7 @@ export function IdentityRevealPage() {
       </div>
 
       <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 8 }}>
-        <Button fullWidth onClick={() => navigate(`/discovery/message/${supplier.id}`)}>
+        <Button fullWidth onClick={() => navigate(`/comm-link/${supplier.id}`)}>
           Message Supplier
         </Button>
         <Button variant="secondary" fullWidth onClick={() => navigate('/')}>

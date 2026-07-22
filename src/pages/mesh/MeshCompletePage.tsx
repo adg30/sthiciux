@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { Button } from '../../components/ui/Button'
 import { ConnectionDiagram } from '../../components/ui/ConnectionDiagram'
 import { usePrototype } from '../../context/prototype-context'
@@ -10,9 +10,11 @@ type CompletePhase = 'you-confirmed' | 'both-confirmed' | 'vouch-prompt'
 export function MeshCompletePage() {
   const { itemId } = useParams()
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const { setMeshExchangeCompleted } = usePrototype()
   const [phase, setPhase] = useState<CompletePhase>('you-confirmed')
   const item = MESH_ITEMS.find((candidate) => candidate.id === itemId) ?? MESH_ITEMS[0]
+  const isExistingConnection = searchParams.get('existing') === '1' || item.relationship === 'connected'
 
   useEffect(() => {
     if (phase !== 'you-confirmed') return
@@ -49,9 +51,15 @@ export function MeshCompletePage() {
             <Button fullWidth onClick={() => navigate('/')}>
               Return to Dashboard
             </Button>
-            <Button variant="dashed" fullWidth onClick={() => setPhase('vouch-prompt')}>
-              Would you like to vouch?
-            </Button>
+            {isExistingConnection ? (
+              <Button variant="dashed" fullWidth onClick={() => navigate(`/comm-link/${item.businessId}`)}>
+                Return to Comm-Link
+              </Button>
+            ) : (
+              <Button variant="dashed" fullWidth onClick={() => setPhase('vouch-prompt')}>
+                Would you like to vouch?
+              </Button>
+            )}
           </>
         )}
       </div>

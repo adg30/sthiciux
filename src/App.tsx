@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { AppShell } from './components/layout/AppShell'
 import { DashboardPage } from './pages/DashboardPage'
+import { CommLinkInboxPage } from './pages/CommLinkInboxPage'
 import { DiscoveryConfirmPage } from './pages/discovery/DiscoveryConfirmPage'
 import { DiscoveryResultsPage } from './pages/discovery/DiscoveryResultsPage'
 import { DiscoverySearchPage } from './pages/discovery/DiscoverySearchPage'
@@ -30,6 +31,7 @@ export default function App() {
         <Route index element={<DashboardPage />} />
         <Route path="discovery" element={<DiscoverySearchPage />} />
         <Route path="mesh" element={<MeshBoardPage />} />
+        <Route path="comm-link" element={<CommLinkInboxPage />} />
         <Route path="profile" element={<ProfilePage />} />
         <Route path="vouch-score" element={<VouchScorePage />} />
         <Route path="trust-card" element={<TrustCardPage />} />
@@ -45,6 +47,7 @@ export default function App() {
         <Route path="discovery/confirm/:supplierId" element={<DiscoveryConfirmPage />} />
         <Route path="discovery/revealed/:supplierId" element={<IdentityRevealPage />} />
         <Route path="discovery/message/:supplierId" element={<SupplierMessagePage />} />
+        <Route path="comm-link/:contactId" element={<SupplierMessagePage />} />
         <Route path="vouch-actions/:actionId" element={<VouchActionDetailPage />} />
         <Route path="mesh/item/:itemId" element={<MeshListingPage />} />
         <Route path="mesh/confirm/:itemId" element={<MeshConfirmPage />} />

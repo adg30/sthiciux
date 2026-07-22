@@ -4,7 +4,7 @@ import styles from './BottomNav.module.css'
 const NAV_ITEMS = [
   { to: '/discovery', label: 'Discovery' },
   { to: '/mesh', label: 'Mesh Exchange' },
-  { to: '/', label: 'Network', end: true },
+  { to: '/comm-link', label: 'Comm-Link' },
   { to: '/profile', label: 'Profile' },
 ]
 
@@ -15,7 +15,6 @@ export function BottomNav() {
         <NavLink
           key={item.to}
           to={item.to}
-          end={item.end}
           className={({ isActive }) =>
             `${styles['bottom-nav__item']} ${isActive ? styles['bottom-nav__item--active'] : ''}`
           }

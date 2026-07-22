@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { MOCK_SUPPLIERS } from '../../data/constants'
+import { COMM_CONTACTS } from '../../data/constants'
 import styles from './SupplierMessagePage.module.css'
 
 interface CommMessage {
@@ -26,8 +26,9 @@ const INITIAL_MESSAGES: CommMessage[] = [
 ]
 
 export function SupplierMessagePage() {
-  const { supplierId } = useParams()
-  const supplier = MOCK_SUPPLIERS.find((candidate) => candidate.id === supplierId) ?? MOCK_SUPPLIERS[0]
+  const { supplierId, contactId } = useParams()
+  const activeContactId = contactId ?? supplierId
+  const supplier = COMM_CONTACTS.find((candidate) => candidate.id === activeContactId) ?? COMM_CONTACTS[0]
   const [draft, setDraft] = useState('')
   const [messages, setMessages] = useState<CommMessage[]>(INITIAL_MESSAGES)
   const [awaitingReply, setAwaitingReply] = useState(false)
