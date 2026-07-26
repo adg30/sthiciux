@@ -65,7 +65,7 @@ export function SupplyAccessGatePage() {
     e.currentTarget.setPointerCapture(e.pointerId)
     setDragging(true)
     setSnapping(false)
-    setShowInsufficient(false)
+    if (canUnlock) setShowInsufficient(false)
     startYRef.current = e.clientY
     startProgressRef.current = progress
   }
@@ -94,7 +94,6 @@ export function SupplyAccessGatePage() {
     setProgress(0)
     if (!canUnlock) {
       setShowInsufficient(true)
-      setTimeout(() => setShowInsufficient(false), 3000)
     }
   }
 
@@ -117,7 +116,6 @@ export function SupplyAccessGatePage() {
         setTimeout(() => navigate(`/discovery/confirm/${supplierId}`), 600)
       } else {
         setShowInsufficient(true)
-        setTimeout(() => setShowInsufficient(false), 3000)
       }
     }
   }
@@ -179,7 +177,9 @@ export function SupplyAccessGatePage() {
           <div className={styles.insufficient} role="alert">
             <p className={styles.insufficientTitle}>Higher trust is required to access this supplier.</p>
             <p className={styles.insufficientScores}>
-              Your score: {vouchScore}/100 · Required: {gateRequiredScore}/100
+              Current score: <strong>{vouchScore}/100</strong>
+              <span aria-hidden="true">→</span>
+              Required score: <strong>{gateRequiredScore}/100</strong>
             </p>
             <Button variant="secondary" fullWidth onClick={() => navigate('/vouch-actions')}>
               See how to raise the score
@@ -204,11 +204,10 @@ export function SupplyAccessGatePage() {
               navigate(`/discovery/confirm/${supplierId}`)
             } else {
               setShowInsufficient(true)
-              setTimeout(() => setShowInsufficient(false), 3000)
             }
           }}
         >
-          Tap to attempt unlock (keyboard fallback)
+          Tap to attempt unlock
         </Button>
       </div>
     </div>

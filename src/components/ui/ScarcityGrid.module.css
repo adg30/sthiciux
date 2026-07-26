@@ -26,7 +26,7 @@
 }
 
 .scarcity-preview--map {
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 1 / 0.94;
   padding: 0;
   cursor: default;
 }
@@ -34,7 +34,7 @@
 .scarcity-preview__target-button {
   position: absolute;
   left: 68%;
-  top: 75%;
+  top: 70%;
   transform: translate(-50%, -50%);
   width: 46px;
   height: 46px;
@@ -53,12 +53,12 @@
   top: calc(100% + 9px);
   transform: translateX(-50%);
   width: max-content;
-  max-width: 96px;
-  padding: 3px 6px;
+  max-width: 132px;
+  padding: 5px 7px;
   border-radius: 4px;
   background: #111;
   color: #fff;
-  font-size: 0.5625rem;
+  font-size: 0.625rem;
   font-weight: 700;
 }
 

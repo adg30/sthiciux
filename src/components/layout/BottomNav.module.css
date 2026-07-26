@@ -41,3 +41,13 @@
   text-align: center;
   line-height: 1.2;
 }
+
+.bottom-nav__icon {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 18px;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+}

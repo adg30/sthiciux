@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '../../components/ui/Button'
 import { MESH_ITEMS } from '../../data/constants'
@@ -22,6 +23,7 @@ function getNodePositions(count: number): NodePosition[] {
 export function MeshBoardPage() {
   const navigate = useNavigate()
   const positions = getNodePositions(MESH_ITEMS.length)
+  const [activeId, setActiveId] = useState<string | null>(null)
 
   return (
     <div className="screen">
@@ -47,9 +49,13 @@ export function MeshBoardPage() {
             <button
               key={item.id}
               type="button"
-              className={`${styles.node} ${styles[`node--${item.relationship}`]}`}
+              className={`${styles.node} ${styles[`node--${item.relationship}`]} ${activeId === item.id ? styles['node--active'] : ''}`}
               style={{ left: `${positions[index].x}%`, top: `${positions[index].y}%` }}
               onClick={() => navigate(`/mesh/item/${item.id}`)}
+              onPointerEnter={() => setActiveId(item.id)}
+              onPointerLeave={() => setActiveId(null)}
+              onFocus={() => setActiveId(item.id)}
+              onBlur={() => setActiveId(null)}
               aria-label={`${item.name}, ${item.relationship === 'connected' ? `connected with ${item.business}` : `${item.relationship} business`}`}
             >
               <span>{index + 1}</span>
@@ -64,23 +70,32 @@ export function MeshBoardPage() {
       </div>
 
       <ul className={styles.list}>
-        {MESH_ITEMS.map((item) => (
+        {MESH_ITEMS.map((item, index) => (
           <li key={item.id}>
             <button
               type="button"
-              className={styles.item}
+              className={`${styles.item} ${styles[`item--${item.relationship}`]} ${activeId === item.id ? styles['item--active'] : ''}`}
               onClick={() => navigate(`/mesh/item/${item.id}`)}
+              onPointerEnter={() => setActiveId(item.id)}
+              onPointerLeave={() => setActiveId(null)}
+              onFocus={() => setActiveId(item.id)}
+              onBlur={() => setActiveId(null)}
             >
-              <div className={styles.thumb} aria-hidden="true" />
+              <span className={`${styles.itemNumber} ${styles[`itemNumber--${item.relationship}`]}`} aria-hidden="true">
+                {index + 1}
+              </span>
+              <div className={`${styles.thumb} ${item.relationship === 'connected' ? styles['thumb--connected'] : ''}`} aria-hidden="true">
+                {item.relationship === 'connected' ? item.business.charAt(0) : 'Hidden'}
+              </div>
               <div className={styles.info}>
                 <span className={styles.name}>{item.name}</span>
                 <span className={styles.meta}>{item.distance}</span>
-                <span className={styles.relationship}>
+                <span className={`${styles.relationship} ${styles[`relationship--${item.relationship}`]}`}>
                   {item.relationship === 'connected'
                     ? `Connected · ${item.business}`
                     : item.relationship === 'pending'
                       ? 'Connection pending'
-                      : 'Anonymous business'}
+                      : 'New connection · Identity hidden'}
                 </span>
               </div>
               <span className={styles.plus} aria-hidden="true">

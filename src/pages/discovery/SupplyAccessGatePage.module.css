@@ -129,6 +129,7 @@
   border-radius: var(--radius-sm);
   background: var(--color-surface);
   animation: fadeIn 0.2s ease;
+  border-width: 2px;
 }
 
 .insufficientTitle {
@@ -141,6 +142,10 @@
   font-size: 0.8125rem;
   color: var(--color-text-muted);
   margin: 0 0 12px;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
 }
 
 .success {

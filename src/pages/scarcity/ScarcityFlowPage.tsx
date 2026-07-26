@@ -28,7 +28,10 @@ export function ScarcityFlowPage() {
     return (
       <div className={`screen ${styles.centered}`}>
         <StabilizingIcon />
-        <p className={styles.stabilizingText}>Stabilizing Signal</p>
+        <p className={styles.stabilizingText}>Verifying signal reliability…</p>
+        <p className={styles.stabilizingSub}>
+          Comparing reports from nearby verified businesses.
+        </p>
       </div>
     )
   }
@@ -38,7 +41,7 @@ export function ScarcityFlowPage() {
       <div className="screen">
         <h1 className="screen-title">Verified Scarcity</h1>
         <div className={`card card--dashed ${styles.result}`}>
-          <span className={styles.verifiedBadge}>Verified network signal</span>
+          <span className={styles.verifiedBadge}>Verified using nearby reports</span>
           <p className={styles.resultTitle}>{selected.name} scarcity confirmed</p>
           <p className={styles.resultSub}>Signal verified within your barangay</p>
           <dl className={styles.evidence}>
@@ -69,7 +72,7 @@ export function ScarcityFlowPage() {
 
   return (
     <div className="screen">
-      <h1 className="screen-title">Scarcity Map</h1>
+      <h1 className="screen-title">Supply Signals Near You</h1>
       <div className={styles.mapHeader}>
         <div>
           <strong>Barangay supply scan</strong>
@@ -90,7 +93,12 @@ export function ScarcityFlowPage() {
           </button>
         ))}
       </div>
-      <ScarcityGrid interactive onEpicenterClick={() => setPhase('stabilizing')} />
+      <p className={styles.instruction}>Select a signal to verify whether the reported shortage is reliable.</p>
+      <ScarcityGrid
+        interactive
+        targetLabel={`${selected.name} · ${selected.status}`}
+        onEpicenterClick={() => setPhase('stabilizing')}
+      />
       <div className={styles.legend} aria-label="Map signal legend">
         <span><i className={styles.criticalDot} /> Critical</span>
         <span><i className={styles.limitedDot} /> Limited</span>
@@ -100,7 +108,9 @@ export function ScarcityFlowPage() {
         <strong>{selected.name}: {selected.status}</strong>
         <span>{selected.reports} peer reports within {selected.radius}</span>
       </div>
-      <p className={styles.hint}>The grid compresses toward the strongest scarcity signal. Select the marked epicenter to verify it.</p>
+      <p className={styles.hint}>
+        Tighter grid lines indicate a stronger concentration of shortage reports.
+      </p>
     </div>
   )
 }

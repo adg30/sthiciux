@@ -4,35 +4,36 @@ interface ScarcityGridProps {
   compact?: boolean
   interactive?: boolean
   onEpicenterClick?: () => void
+  targetLabel?: string
 }
 
 function buildGridLines(compact: boolean) {
   const lines: { x1: number; y1: number; x2: number; y2: number; key: string }[] = []
   const epicenterX = compact ? 72 : 68
-  const epicenterY = compact ? 78 : 75
+  const epicenterY = compact ? 76 : 70
+  const verticalPositions = compact
+    ? [8, 28, 46, 59, 66, 70, 73, 77, 84, 94]
+    : [6, 20, 36, 50, 59, 63, 66, 68, 70, 73, 77, 84, 94]
+  const horizontalPositions = compact
+    ? [8, 28, 48, 62, 69, 73, 76, 80, 87, 95]
+    : [6, 20, 37, 52, 61, 65, 68, 70, 72, 75, 79, 86, 95]
 
-  for (let i = 0; i <= 8; i++) {
-    const t = i / 8
-    const spacing = 8 + t * t * (compact ? 28 : 32)
-    const x = epicenterX - spacing * (4 - i)
-    if (x >= 4 && x <= 96) {
-      lines.push({ x1: x, y1: 4, x2: x, y2: 96, key: `v-${i}` })
-    }
-  }
-
-  for (let i = 0; i <= 8; i++) {
-    const t = i / 8
-    const spacing = 8 + t * t * (compact ? 28 : 32)
-    const y = epicenterY - spacing * (4 - i)
-    if (y >= 4 && y <= 96) {
-      lines.push({ x1: 4, y1: y, x2: 96, y2: y, key: `h-${i}` })
-    }
-  }
+  verticalPositions.forEach((x, index) => {
+    lines.push({ x1: x, y1: 4, x2: x, y2: 96, key: `v-${index}` })
+  })
+  horizontalPositions.forEach((y, index) => {
+    lines.push({ x1: 4, y1: y, x2: 96, y2: y, key: `h-${index}` })
+  })
 
   return { lines, epicenterX, epicenterY }
 }
 
-export function ScarcityGrid({ compact = false, interactive = false, onEpicenterClick }: ScarcityGridProps) {
+export function ScarcityGrid({
+  compact = false,
+  interactive = false,
+  onEpicenterClick,
+  targetLabel = 'Cooking oil · Critical',
+}: ScarcityGridProps) {
   const { lines, epicenterX, epicenterY } = buildGridLines(compact)
 
   const svg = (
@@ -102,7 +103,7 @@ export function ScarcityGrid({ compact = false, interactive = false, onEpicenter
           onClick={onEpicenterClick}
           aria-label="Inspect critical scarcity epicenter"
         >
-          <span>Critical signal</span>
+          <span>{targetLabel}</span>
         </button>
       )}
     </div>

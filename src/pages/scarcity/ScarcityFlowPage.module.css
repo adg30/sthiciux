@@ -18,6 +18,24 @@
   margin: 0;
 }
 
+.stabilizingSub {
+  max-width: 260px;
+  margin: -8px 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.instruction {
+  margin: -4px 0 -8px;
+  padding: 10px 12px;
+  border-left: 3px solid #111;
+  background: var(--color-surface);
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
 .mapHeader {
   display: flex;
   align-items: flex-start;

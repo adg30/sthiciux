@@ -2,7 +2,7 @@ export const CAPABILITIES = [
   'Basic',
   'Regional',
   'Mesh',
-  'Premium',
+  'High-Trust',
   'Logistics',
   'Trust',
   'Insights',
@@ -29,7 +29,7 @@ export const SCORE_PRESETS: Record<
     label: 'LIMITED',
     level: 'Level 2: Limited',
     message:
-      'Earn 16 more points to unlock premium suppliers — transitive vouching.',
+      'Earn 16 more points to unlock high-trust suppliers through verified network activity.',
   },
   full: {
     score: 88,

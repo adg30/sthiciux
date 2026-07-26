@@ -43,7 +43,8 @@ export function MeshVouchPage() {
 
       <p className={styles.question}>Vouch for this business?</p>
       <p className={styles.note}>
-        This is voluntary and initiated by you. The other business did not request this vouch.
+        You confirmed that the goods were received. This endorsement is voluntary and initiated by you;
+        the other business did not request it.
       </p>
 
       <label className="sr-only" htmlFor="vouch-text">

@@ -2,10 +2,10 @@ import { NavLink } from 'react-router-dom'
 import styles from './BottomNav.module.css'
 
 const NAV_ITEMS = [
-  { to: '/discovery', label: 'Discovery' },
-  { to: '/mesh', label: 'Mesh Exchange' },
-  { to: '/comm-link', label: 'Comm-Link' },
-  { to: '/profile', label: 'Profile' },
+  { to: '/discovery', label: 'Discovery', icon: '⌕' },
+  { to: '/mesh', label: 'Mesh', icon: '◇' },
+  { to: '/comm-link', label: 'Messages', icon: '▢' },
+  { to: '/profile', label: 'Profile', icon: '○' },
 ]
 
 export function BottomNav() {
@@ -19,6 +19,7 @@ export function BottomNav() {
             `${styles['bottom-nav__item']} ${isActive ? styles['bottom-nav__item--active'] : ''}`
           }
         >
+          <span className={styles['bottom-nav__icon']} aria-hidden="true">{item.icon}</span>
           <span className={styles['bottom-nav__label']}>{item.label}</span>
         </NavLink>
       ))}

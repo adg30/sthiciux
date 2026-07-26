@@ -19,6 +19,9 @@ export function VouchScorePage() {
   return (
     <div className="screen">
       <h1 className="screen-title">Vouch Score</h1>
+      <p className={styles.explanation}>
+        Your score reflects verified business activity and determines which network features you can access.
+      </p>
 
       <div className={`card ${styles.card}`}>
         <div className={styles.score}>{vouchScore}/100</div>

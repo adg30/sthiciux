@@ -5,7 +5,7 @@ import { ConnectionDiagram } from '../../components/ui/ConnectionDiagram'
 import { usePrototype } from '../../context/prototype-context'
 import { MESH_ITEMS, OTHER_PARTY_CONFIRM_DELAY_MS } from '../../data/constants'
 
-type CompletePhase = 'you-confirmed' | 'both-confirmed' | 'vouch-prompt'
+type CompletePhase = 'you-confirmed' | 'both-confirmed' | 'received' | 'vouch-prompt'
 
 export function MeshCompletePage() {
   const { itemId } = useParams()
@@ -20,7 +20,6 @@ export function MeshCompletePage() {
     if (phase !== 'you-confirmed') return
     const timer = setTimeout(() => {
       setPhase('both-confirmed')
-      setMeshExchangeCompleted(true)
     }, OTHER_PARTY_CONFIRM_DELAY_MS)
     return () => clearTimeout(timer)
   }, [phase, setMeshExchangeCompleted])
@@ -35,9 +34,16 @@ export function MeshCompletePage() {
       <h1 className="screen-title">Mesh Complete</h1>
 
       <ConnectionDiagram
-        state={phase === 'both-confirmed' ? 'confirm-both' : 'confirm-you'}
+        state={phase === 'both-confirmed' || phase === 'received' ? 'confirm-both' : 'confirm-you'}
         otherName={item.business}
         revealOther
+        message={
+          phase === 'both-confirmed'
+            ? 'Logistics confirmed by both parties. Confirm receipt only after the goods arrive.'
+            : phase === 'received'
+              ? 'Goods received. The exchange is now complete.'
+              : undefined
+        }
       />
 
       <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -47,6 +53,17 @@ export function MeshCompletePage() {
           </Button>
         )}
         {phase === 'both-confirmed' && (
+          <Button
+            fullWidth
+            onClick={() => {
+              setMeshExchangeCompleted(true)
+              setPhase('received')
+            }}
+          >
+            Confirm Goods Received
+          </Button>
+        )}
+        {phase === 'received' && (
           <>
             <Button fullWidth onClick={() => navigate('/')}>
               Return to Dashboard

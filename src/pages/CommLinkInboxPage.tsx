@@ -7,10 +7,14 @@ export function CommLinkInboxPage() {
 
   return (
     <div className="screen">
-      <h1 className="screen-title">Encrypted Comm-Link</h1>
+      <h1 className="screen-title">Messages</h1>
       <div className={styles.security}>
         <span aria-hidden="true">◇</span>
-        <div><strong>Secure connections</strong><p>Only mutually revealed businesses appear here.</p></div>
+        <div><strong>Encrypted Comm-Link</strong><p>Only mutually revealed businesses can message you here.</p></div>
+      </div>
+      <div className={styles.sectionHeading}>
+        <strong>Conversations</strong>
+        <span>{COMM_CONTACTS.length} secure connections</span>
       </div>
       <ul className={styles.list}>
         {COMM_CONTACTS.map((contact, index) => (
@@ -20,7 +24,7 @@ export function CommLinkInboxPage() {
               <span className={styles.content}>
                 <strong>{contact.name}</strong>
                 <span>{contact.detail}</span>
-                <small>{index === 0 ? 'New encrypted session available' : contact.source}</small>
+                <small>{index === 0 ? 'Open conversation · New message' : `Open conversation · ${contact.source}`}</small>
               </span>
               <span className={styles.status}><i /> Secure</span>
             </button>
