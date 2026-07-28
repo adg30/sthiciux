@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { FlowContext } from '../../components/demo/FlowContext'
 import { Button } from '../../components/ui/Button'
 import styles from './DiscoverySearchPage.module.css'
 
@@ -25,6 +26,10 @@ export function DiscoverySearchPage() {
   return (
     <div className="screen">
       <h1 className="screen-title">Discovery</h1>
+      <FlowContext label="Trust-gated discovery">
+        Supplier access depends on verified business trust, protecting both sides
+        before identities are revealed.
+      </FlowContext>
 
       <label className="sr-only" htmlFor="supplier-search">
         Search suppliers and services

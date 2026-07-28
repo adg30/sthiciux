@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import { FlowContext } from '../components/demo/FlowContext'
 import { AccessTiles } from '../components/ui/AccessTiles'
 import { Button } from '../components/ui/Button'
 import { ProgressBar } from '../components/ui/ProgressBar'
@@ -19,9 +20,10 @@ export function VouchScorePage() {
   return (
     <div className="screen">
       <h1 className="screen-title">Vouch Score</h1>
-      <p className={styles.explanation}>
-        Your score reflects verified business activity and determines which network features you can access.
-      </p>
+      <FlowContext label="Access through activity">
+        Verified business activity determines which network capabilities are
+        available—not payment or subscription status.
+      </FlowContext>
 
       <div className={`card ${styles.card}`}>
         <div className={styles.score}>{vouchScore}/100</div>
@@ -41,6 +43,9 @@ export function VouchScorePage() {
             View Vouch Action List
           </Button>
         )}
+        <Button variant="secondary" fullWidth onClick={() => navigate('/')}>
+          Return to Dashboard
+        </Button>
       </div>
     </div>
   )

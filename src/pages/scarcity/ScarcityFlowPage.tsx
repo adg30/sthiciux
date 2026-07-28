@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { FlowContext } from '../../components/demo/FlowContext'
 import { ScarcityGrid, StabilizingIcon } from '../../components/ui/ScarcityGrid'
 import { STABILIZING_DELAY_MS } from '../../data/constants'
 import styles from './ScarcityFlowPage.module.css'
@@ -65,6 +66,13 @@ export function ScarcityFlowPage() {
           >
             Check the Mesh for this Item
           </button>
+          <button
+            type="button"
+            className={styles.returnBtn}
+            onClick={() => navigate('/')}
+          >
+            Return to Dashboard
+          </button>
         </div>
       </div>
     )
@@ -73,6 +81,10 @@ export function ScarcityFlowPage() {
   return (
     <div className="screen">
       <h1 className="screen-title">Supply Signals Near You</h1>
+      <FlowContext label="Verify before acting">
+        Nearby business reports are checked before a possible shortage is treated
+        as reliable.
+      </FlowContext>
       <div className={styles.mapHeader}>
         <div>
           <strong>Barangay supply scan</strong>

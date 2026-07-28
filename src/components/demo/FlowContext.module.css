@@ -1,0 +1,27 @@
+.context {
+  display: grid;
+  grid-template-columns: minmax(86px, 0.36fr) 1fr;
+  gap: 10px;
+  padding: 10px 12px;
+  border-left: 3px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.context strong {
+  font-size: 0.6875rem;
+  line-height: 1.35;
+}
+
+.context p {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.6875rem;
+  line-height: 1.4;
+}
+
+@media (max-width: 340px) {
+  .context {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}

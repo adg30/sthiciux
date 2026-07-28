@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { FlowContext } from '../../components/demo/FlowContext'
 import { Button } from '../../components/ui/Button'
 import { MESH_ITEMS } from '../../data/constants'
 import styles from './MeshBoardPage.module.css'
@@ -28,6 +29,10 @@ export function MeshBoardPage() {
   return (
     <div className="screen">
       <h1 className="screen-title">Barangay Supply Mesh</h1>
+      <FlowContext label="Consent-based exchange">
+        Businesses connect anonymously and reveal identity only through mutual
+        acceptance.
+      </FlowContext>
 
       <div className={`card ${styles.network}`}>
         <div className={styles.networkHeader}>

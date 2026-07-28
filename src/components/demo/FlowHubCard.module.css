@@ -1,0 +1,44 @@
+.card {
+  position: relative;
+  display: flex;
+  min-height: 146px;
+  flex-direction: column;
+  gap: 7px;
+  padding: 13px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text);
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card:hover,
+.card:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 3px 0 #111;
+}
+
+.number {
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.card strong {
+  max-width: 140px;
+  font-size: 0.875rem;
+  line-height: 1.25;
+}
+
+.description {
+  color: var(--color-text-muted);
+  font-size: 0.6875rem;
+  line-height: 1.4;
+}
+
+.arrow {
+  margin-top: auto;
+  align-self: flex-end;
+  font-size: 1.125rem;
+}
