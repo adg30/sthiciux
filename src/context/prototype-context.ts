@@ -2,6 +2,14 @@ import { createContext, useContext } from 'react'
 import type { ScorePreset } from '../data/constants'
 
 export type SimulatedOutcome = 'accept' | 'decline'
+export interface PrototypeSessionSnapshot {
+  scoreLevelLabel: string
+  startedActionsCount: number
+  hasVerifiedScarcity: boolean
+  verifiedScarcityId: string | null
+  meshExchangeCompleted: boolean
+  vouchSubmitted: boolean
+}
 
 export interface PrototypeContextValue {
   vouchScore: number
@@ -16,6 +24,9 @@ export interface PrototypeContextValue {
   setSimulatedOutcome: (value: SimulatedOutcome) => void
   startedActions: string[]
   startAction: (actionId: string) => void
+  verifiedScarcityId: string | null
+  setVerifiedScarcityId: (signalId: string | null) => void
+  prototypeSession: PrototypeSessionSnapshot
 }
 
 export const PrototypeContext = createContext<PrototypeContextValue | null>(null)

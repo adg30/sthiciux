@@ -3,18 +3,13 @@ import { useNavigate } from 'react-router-dom'
 import { FlowContext } from '../../components/demo/FlowContext'
 import { ScarcityGrid, StabilizingIcon } from '../../components/ui/ScarcityGrid'
 import { StatusPill } from '../../components/ui/StatusPill'
-import { STABILIZING_DELAY_MS } from '../../data/constants'
+import { usePrototype } from '../../context/prototype-context'
+import { SCARCITY_SIGNALS, STABILIZING_DELAY_MS } from '../../data/constants'
 import styles from './ScarcityFlowPage.module.css'
 
 type ScarcityPhase = 'map' | 'stabilizing' | 'verified'
 
-const RESOURCES = [
-  { id: 'oil', name: 'Cooking oil', status: 'Critical', reports: 12, radius: '1.4 km', confidence: 94 },
-  { id: 'rice', name: 'Rice', status: 'Limited', reports: 7, radius: '2.1 km', confidence: 81 },
-  { id: 'packaging', name: 'Packaging', status: 'Stable', reports: 4, radius: '3.0 km', confidence: 76 },
-] as const
-
-function getResourceTone(status: (typeof RESOURCES)[number]['status']) {
+function getResourceTone(status: (typeof SCARCITY_SIGNALS)[number]['status']) {
   if (status === 'Critical') return 'critical'
   if (status === 'Limited') return 'scarcity'
   return 'signal'
@@ -22,15 +17,20 @@ function getResourceTone(status: (typeof RESOURCES)[number]['status']) {
 
 export function ScarcityFlowPage() {
   const navigate = useNavigate()
+  const { setVerifiedScarcityId } = usePrototype()
   const [phase, setPhase] = useState<ScarcityPhase>('map')
-  const [selectedId, setSelectedId] = useState<(typeof RESOURCES)[number]['id']>('oil')
-  const selected = RESOURCES.find((resource) => resource.id === selectedId) ?? RESOURCES[0]
+  const [selectedId, setSelectedId] = useState<(typeof SCARCITY_SIGNALS)[number]['id']>('oil')
+  const selected =
+    SCARCITY_SIGNALS.find((resource) => resource.id === selectedId) ?? SCARCITY_SIGNALS[0]
 
   useEffect(() => {
     if (phase !== 'stabilizing') return
-    const timer = setTimeout(() => setPhase('verified'), STABILIZING_DELAY_MS)
+    const timer = setTimeout(() => {
+      setVerifiedScarcityId(selected.id)
+      setPhase('verified')
+    }, STABILIZING_DELAY_MS)
     return () => clearTimeout(timer)
-  }, [phase])
+  }, [phase, selected.id, setVerifiedScarcityId])
 
   if (phase === 'stabilizing') {
     return (
@@ -57,6 +57,8 @@ export function ScarcityFlowPage() {
             <div><dt>Peer reports</dt><dd>{selected.reports}</dd></div>
             <div><dt>Affected radius</dt><dd>{selected.radius}</dd></div>
           </dl>
+          <p className={styles.resultReason}>{selected.confidenceReason}</p>
+          <p className={styles.resultReason}>Last stabilized {selected.verifiedAt}</p>
         </div>
         <div className={styles.actions}>
           <button
@@ -110,7 +112,7 @@ export function ScarcityFlowPage() {
         <span className={styles.live}><i /> Live</span>
       </div>
       <div className={styles.filters} role="group" aria-label="Resource shown on map">
-        {RESOURCES.map((resource) => (
+        {SCARCITY_SIGNALS.map((resource) => (
           <button
             key={resource.id}
             type="button"

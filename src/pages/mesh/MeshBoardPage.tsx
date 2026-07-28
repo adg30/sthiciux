@@ -26,6 +26,9 @@ export function MeshBoardPage() {
   const navigate = useNavigate()
   const positions = getNodePositions(MESH_ITEMS.length)
   const [activeId, setActiveId] = useState<string | null>(null)
+  const connectedCount = MESH_ITEMS.filter((item) => item.relationship === 'connected').length
+  const pendingCount = MESH_ITEMS.filter((item) => item.relationship === 'pending').length
+  const anonymousCount = MESH_ITEMS.filter((item) => item.relationship === 'anonymous').length
 
   return (
     <div className="screen">
@@ -46,15 +49,15 @@ export function MeshBoardPage() {
         <div className={styles.stateGrid}>
           <div className={styles.stateItem}>
             <StatusPill tone="trust">Connected</StatusPill>
-            <p>Identity is already shared, so you can move directly into an exchange.</p>
+            <p>{connectedCount} active post uses an existing connection, so identity is already shared.</p>
           </div>
           <div className={styles.stateItem}>
             <StatusPill tone="scarcity">Pending</StatusPill>
-            <p>A request is in progress, but both businesses still need to confirm.</p>
+            <p>{pendingCount} post is awaiting mutual confirmation before identity unlock can continue.</p>
           </div>
           <div className={styles.stateItem}>
             <StatusPill tone="ink">Anonymous</StatusPill>
-            <p>Inventory is visible while identity stays hidden until both sides agree.</p>
+            <p>{anonymousCount} posts keep inventory visible while identity stays hidden until both sides agree.</p>
           </div>
         </div>
       </section>
@@ -123,7 +126,9 @@ export function MeshBoardPage() {
               </div>
               <div className={styles.info}>
                 <span className={styles.name}>{item.name}</span>
-                <span className={styles.meta}>{item.distance}</span>
+                <span className={styles.meta}>
+                  {item.distance} · {item.barangay}
+                </span>
                 <span className={`${styles.relationship} ${styles[`relationship--${item.relationship}`]}`}>
                   {item.relationship === 'connected'
                     ? `Connected state · ${item.business}`
@@ -131,6 +136,7 @@ export function MeshBoardPage() {
                       ? 'Pending state · Awaiting mutual confirmation'
                       : 'Anonymous state · Identity hidden'}
                 </span>
+                <span className={styles.fulfillmentNote}>{item.fulfillmentNote}</span>
               </div>
               <span className={styles.plus} aria-hidden="true">
                 +

@@ -12,11 +12,14 @@ export const CAPABILITIES = [
 export type Capability = (typeof CAPABILITIES)[number]
 
 export type ScorePreset = 'restricted' | 'limited' | 'full'
+export type ScorePresetMeta = {
+  score: number
+  label: string
+  level: string
+  message: string
+}
 
-export const SCORE_PRESETS: Record<
-  ScorePreset,
-  { score: number; label: string; level: string; message: string }
-> = {
+export const SCORE_PRESETS: Record<ScorePreset, ScorePresetMeta> = {
   restricted: {
     score: 15,
     label: 'RESTRICTED',
@@ -98,11 +101,104 @@ export const VOUCH_ACTIONS = [
   },
 ]
 
+export type SupplierTrustState = 'gated' | 'available'
+export interface MockSupplier {
+  id: string
+  category: string
+  distance: string
+  name: string
+  barangay: string
+  trustState: SupplierTrustState
+  availabilityNote: string
+}
+
 export const MOCK_SUPPLIERS = [
-  { id: 's1', category: 'Grocery', distance: '1.2 km', name: 'Barangay Fresh Supply Co.' },
-  { id: 's2', category: 'Cooking Oil', distance: '2.0 km', name: 'Luzon Oil Traders' },
-  { id: 's3', category: 'Packaging', distance: '3.5 km', name: 'Metro Pack Solutions' },
-]
+  {
+    id: 's1',
+    category: 'Grocery',
+    distance: '1.2 km',
+    name: 'Barangay Fresh Supply Co.',
+    barangay: 'Poblacion',
+    trustState: 'available',
+    availabilityNote: 'Restocks from nearby verified vendors every Tuesday and Friday.',
+  },
+  {
+    id: 's2',
+    category: 'Cooking Oil',
+    distance: '2.0 km',
+    name: 'Luzon Oil Traders',
+    barangay: 'Market zone',
+    trustState: 'gated',
+    availabilityNote: 'Higher-volume stock requires stronger verified trust before identity reveal.',
+  },
+  {
+    id: 's3',
+    category: 'Packaging',
+    distance: '3.5 km',
+    name: 'Metro Pack Solutions',
+    barangay: 'South cluster',
+    trustState: 'gated',
+    availabilityNote: 'Shared through the supplier forest to reduce unnecessary identity exposure.',
+  },
+] satisfies MockSupplier[]
+
+export type ScarcitySignalStatus = 'Critical' | 'Limited' | 'Stable'
+export interface ScarcitySignal {
+  id: string
+  name: string
+  status: ScarcitySignalStatus
+  reports: number
+  radius: string
+  confidence: number
+  verifiedAt: string
+  confidenceReason: string
+}
+
+export const SCARCITY_SIGNALS = [
+  {
+    id: 'oil',
+    name: 'Cooking oil',
+    status: 'Critical',
+    reports: 12,
+    radius: '1.4 km',
+    confidence: 94,
+    verifiedAt: '5 min ago',
+    confidenceReason: 'Twelve reports aligned across nearby verified businesses.',
+  },
+  {
+    id: 'rice',
+    name: 'Rice',
+    status: 'Limited',
+    reports: 7,
+    radius: '2.1 km',
+    confidence: 81,
+    verifiedAt: '9 min ago',
+    confidenceReason: 'Signals cluster around the market zone but remain partially mixed.',
+  },
+  {
+    id: 'packaging',
+    name: 'Packaging',
+    status: 'Stable',
+    reports: 4,
+    radius: '3.0 km',
+    confidence: 76,
+    verifiedAt: '12 min ago',
+    confidenceReason: 'Reports remain light and are offset by steady supplier confirmations.',
+  },
+] satisfies ScarcitySignal[]
+
+export type MeshRelationshipState = 'connected' | 'pending' | 'anonymous'
+export interface MeshItem {
+  id: string
+  businessId: string
+  name: string
+  distance: string
+  business: string
+  relationship: MeshRelationshipState
+  barangay: string
+  consentSummary: string
+  fulfillmentNote: string
+}
 
 export const MESH_ITEMS = [
   {
@@ -112,6 +208,9 @@ export const MESH_ITEMS = [
     distance: '~2 km',
     business: 'Sari-Sari Provisions',
     relationship: 'connected',
+    barangay: 'Poblacion',
+    consentSummary: 'Identity already shared through an existing Mesh relationship.',
+    fulfillmentNote: 'Ready for direct exchange coordination through Messages.',
   },
   {
     id: 'm2',
@@ -120,6 +219,9 @@ export const MESH_ITEMS = [
     distance: '~1 km',
     business: 'Grain Hub MSME',
     relationship: 'pending',
+    barangay: 'Market zone',
+    consentSummary: 'A request is in progress, but both businesses still need to confirm.',
+    fulfillmentNote: 'Hold identity details until both sides explicitly accept.',
   },
   {
     id: 'm3',
@@ -128,6 +230,9 @@ export const MESH_ITEMS = [
     distance: '~3 km',
     business: 'PackRight Trading',
     relationship: 'anonymous',
+    barangay: 'South cluster',
+    consentSummary: 'Inventory is visible first while both identities remain protected.',
+    fulfillmentNote: 'Use the listing to decide whether to request a protected introduction.',
   },
   {
     id: 'm4',
@@ -136,6 +241,9 @@ export const MESH_ITEMS = [
     distance: '~2.5 km',
     business: 'ClearSpring Retail',
     relationship: 'anonymous',
+    barangay: 'Riverside',
+    consentSummary: 'The Mesh hides identity until both parties accept the exchange.',
+    fulfillmentNote: 'Good for urgent supply checks without exposing the seller immediately.',
   },
   {
     id: 'm5',
@@ -144,8 +252,11 @@ export const MESH_ITEMS = [
     distance: '~4 km',
     business: 'North Route Logistics',
     relationship: 'anonymous',
+    barangay: 'North route',
+    consentSummary: 'Shared as a protected network post, not a public listing.',
+    fulfillmentNote: 'Useful when a logistics need is real but contacts should stay private.',
   },
-] as const
+] satisfies MeshItem[]
 
 export type MeshRelationship = (typeof MESH_ITEMS)[number]['relationship']
 

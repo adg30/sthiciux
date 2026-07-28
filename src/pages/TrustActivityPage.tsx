@@ -4,7 +4,7 @@ import { usePrototype } from '../context/prototype-context'
 
 export function TrustActivityPage() {
   const navigate = useNavigate()
-  const { meshExchangeCompleted, vouchSubmitted } = usePrototype()
+  const { meshExchangeCompleted, prototypeSession, vouchSubmitted } = usePrototype()
 
   return (
     <div className="screen">
@@ -14,6 +14,9 @@ export function TrustActivityPage() {
         <ul style={{ margin: 0, paddingLeft: 20, lineHeight: 1.8, fontSize: '0.875rem' }}>
           <li>Barangay business location verified</li>
           <li>Scarcity signal available for verification</li>
+          {prototypeSession.hasVerifiedScarcity && (
+            <li>Scarcity signal {prototypeSession.verifiedScarcityId} verified this session</li>
+          )}
           {meshExchangeCompleted && <li>Mesh exchange verified by both parties</li>}
           {vouchSubmitted && <li>Voluntary peer vouch submitted</li>}
         </ul>

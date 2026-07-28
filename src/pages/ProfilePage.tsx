@@ -7,7 +7,7 @@ import styles from './ProfilePage.module.css'
 
 export function ProfilePage() {
   const navigate = useNavigate()
-  const { vouchScore, meshExchangeCompleted, vouchSubmitted } = usePrototype()
+  const { vouchScore, meshExchangeCompleted, prototypeSession, vouchSubmitted } = usePrototype()
 
   return (
     <div className="screen">
@@ -33,6 +33,12 @@ export function ProfilePage() {
         <ul className={styles.activityList}>
           <li>Mesh exchange: {meshExchangeCompleted ? 'Completed' : 'None yet'}</li>
           <li>Peer vouch given: {vouchSubmitted ? 'Yes' : 'None yet'}</li>
+          <li>
+            Scarcity verification:{' '}
+            {prototypeSession.hasVerifiedScarcity
+              ? `Verified signal ${prototypeSession.verifiedScarcityId}`
+              : 'None this session'}
+          </li>
         </ul>
       </div>
 

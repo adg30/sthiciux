@@ -277,6 +277,12 @@
   color: var(--color-text-muted);
 }
 
+.fulfillmentNote {
+  font-size: 0.6875rem;
+  line-height: 1.4;
+  color: var(--color-text-muted);
+}
+
 .relationship {
   font-size: 0.6875rem;
   font-weight: 600;

@@ -6,6 +6,7 @@ import {
 } from 'react'
 import {
   GATE_REQUIRED_SCORE,
+  getLevelLabel,
   SCORE_PRESETS,
   type ScorePreset,
 } from '../data/constants'
@@ -14,6 +15,7 @@ import { PrototypeContext, type SimulatedOutcome } from './prototype-context'
 const STORAGE_KEY = 'voucher-prototype-preset'
 const OUTCOME_STORAGE_KEY = 'voucher-prototype-outcome'
 const ACTIONS_STORAGE_KEY = 'voucher-prototype-started-actions'
+const VERIFIED_SCARCITY_STORAGE_KEY = 'voucher-prototype-verified-scarcity'
 
 function readStartedActions(): string[] {
   try {
@@ -32,6 +34,15 @@ function readPreset(): ScorePreset {
   return 'restricted'
 }
 
+function readVerifiedScarcityId(): string | null {
+  try {
+    const stored = sessionStorage.getItem(VERIFIED_SCARCITY_STORAGE_KEY)
+    return stored || null
+  } catch {
+    return null
+  }
+}
+
 export function PrototypeProvider({ children }: { children: ReactNode }) {
   const [scorePreset, setScorePresetState] = useState<ScorePreset>(readPreset)
   const [meshExchangeCompleted, setMeshExchangeCompleted] = useState(false)
@@ -40,6 +51,9 @@ export function PrototypeProvider({ children }: { children: ReactNode }) {
     localStorage.getItem(OUTCOME_STORAGE_KEY) === 'decline' ? 'decline' : 'accept',
   )
   const [startedActions, setStartedActions] = useState<string[]>(readStartedActions)
+  const [verifiedScarcityId, setVerifiedScarcityIdState] = useState<string | null>(
+    readVerifiedScarcityId,
+  )
 
   const setScorePreset = useCallback((preset: ScorePreset) => {
     setScorePresetState(preset)
@@ -60,6 +74,19 @@ export function PrototypeProvider({ children }: { children: ReactNode }) {
     })
   }, [])
 
+  const setVerifiedScarcityId = useCallback((signalId: string | null) => {
+    setVerifiedScarcityIdState(signalId)
+    try {
+      if (signalId) {
+        sessionStorage.setItem(VERIFIED_SCARCITY_STORAGE_KEY, signalId)
+      } else {
+        sessionStorage.removeItem(VERIFIED_SCARCITY_STORAGE_KEY)
+      }
+    } catch {
+      // The prototype remains usable when browser storage is unavailable.
+    }
+  }, [])
+
   const value = useMemo(
     () => ({
       vouchScore: SCORE_PRESETS[scorePreset].score,
@@ -74,6 +101,16 @@ export function PrototypeProvider({ children }: { children: ReactNode }) {
       setSimulatedOutcome,
       startedActions,
       startAction,
+      verifiedScarcityId,
+      setVerifiedScarcityId,
+      prototypeSession: {
+        scoreLevelLabel: getLevelLabel(SCORE_PRESETS[scorePreset].score),
+        startedActionsCount: startedActions.length,
+        hasVerifiedScarcity: verifiedScarcityId !== null,
+        verifiedScarcityId,
+        meshExchangeCompleted,
+        vouchSubmitted,
+      },
     }),
     [
       scorePreset,
@@ -84,6 +121,8 @@ export function PrototypeProvider({ children }: { children: ReactNode }) {
       setSimulatedOutcome,
       startedActions,
       startAction,
+      verifiedScarcityId,
+      setVerifiedScarcityId,
     ],
   )
 

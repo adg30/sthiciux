@@ -42,7 +42,9 @@ describe('Representative flow semantics', () => {
   it('explains that scarcity signals must be verified before action', () => {
     render(
       <MemoryRouter>
-        <ScarcityFlowPage />
+        <PrototypeProvider>
+          <ScarcityFlowPage />
+        </PrototypeProvider>
       </MemoryRouter>,
     )
 
@@ -55,7 +57,9 @@ describe('Representative flow semantics', () => {
 
     render(
       <MemoryRouter>
-        <ScarcityFlowPage />
+        <PrototypeProvider>
+          <ScarcityFlowPage />
+        </PrototypeProvider>
       </MemoryRouter>,
     )
 
