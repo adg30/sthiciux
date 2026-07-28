@@ -1,10 +1,41 @@
 .search {
   width: 100%;
   padding: 12px 14px;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border-light);
   border-radius: var(--radius-sm);
   background: var(--color-surface);
   font-size: 0.875rem;
+}
+
+.trustSummary {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.trustHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.trustHeader h2 {
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.trustLead {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+.trustSupport {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  line-height: 1.5;
 }
 
 .filters {
@@ -15,7 +46,7 @@
 
 .chip {
   padding: 8px 14px;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border-light);
   border-radius: 999px;
   background: var(--color-surface);
   font-size: 0.75rem;
@@ -25,7 +56,7 @@
 
 .chip--active {
   background: var(--color-fill);
-  color: #fff;
+  color: var(--color-text-inverse);
 }
 
 .recent {

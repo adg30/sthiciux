@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FlowContext } from '../../components/demo/FlowContext'
 import { Button } from '../../components/ui/Button'
+import { StatusPill } from '../../components/ui/StatusPill'
 import { MESH_ITEMS } from '../../data/constants'
 import styles from './MeshBoardPage.module.css'
 
@@ -34,11 +35,39 @@ export function MeshBoardPage() {
         acceptance.
       </FlowContext>
 
+      <section className={`card ${styles.stateCard}`} aria-labelledby="mesh-relationship-states">
+        <div className={styles.stateHeader}>
+          <div>
+            <span className={styles.kicker}>Relationship states</span>
+            <h2 id="mesh-relationship-states">Read each supplier post by its consent state</h2>
+          </div>
+          <StatusPill tone="signal">Map + list paired</StatusPill>
+        </div>
+        <div className={styles.stateGrid}>
+          <div className={styles.stateItem}>
+            <StatusPill tone="trust">Connected</StatusPill>
+            <p>Identity is already shared, so you can move directly into an exchange.</p>
+          </div>
+          <div className={styles.stateItem}>
+            <StatusPill tone="scarcity">Pending</StatusPill>
+            <p>A request is in progress, but both businesses still need to confirm.</p>
+          </div>
+          <div className={styles.stateItem}>
+            <StatusPill tone="ink">Anonymous</StatusPill>
+            <p>Inventory is visible while identity stays hidden until both sides agree.</p>
+          </div>
+        </div>
+      </section>
+
       <div className={`card ${styles.network}`}>
         <div className={styles.networkHeader}>
           <div><strong>Active Mesh</strong><span>{MESH_ITEMS.length} supply posts nearby</span></div>
           <span className={styles.live}>Live</span>
         </div>
+        <p className={styles.networkLead}>
+          Tap a node on the map or its matching list row below to inspect the same
+          supplier state without exposing hidden identities.
+        </p>
         <div className={styles.networkCanvas} aria-label={`${MESH_ITEMS.length} active Mesh posts`}>
           <svg viewBox="0 0 100 100" className={styles.networkSvg} aria-hidden="true">
             {positions.map((position, index) => {
@@ -97,10 +126,10 @@ export function MeshBoardPage() {
                 <span className={styles.meta}>{item.distance}</span>
                 <span className={`${styles.relationship} ${styles[`relationship--${item.relationship}`]}`}>
                   {item.relationship === 'connected'
-                    ? `Connected · ${item.business}`
+                    ? `Connected state · ${item.business}`
                     : item.relationship === 'pending'
-                      ? 'Connection pending'
-                      : 'New connection · Identity hidden'}
+                      ? 'Pending state · Awaiting mutual confirmation'
+                      : 'Anonymous state · Identity hidden'}
                 </span>
               </div>
               <span className={styles.plus} aria-hidden="true">

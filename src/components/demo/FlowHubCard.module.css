@@ -3,12 +3,12 @@
   display: flex;
   min-height: 146px;
   flex-direction: column;
-  gap: 7px;
-  padding: 13px;
-  border: 1px solid var(--color-border);
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid var(--color-border-subtle);
   border-radius: var(--radius-md);
-  background: var(--color-surface);
-  color: var(--color-text);
+  background: linear-gradient(180deg, rgba(248, 250, 252, 0.08), rgba(248, 250, 252, 0.03));
+  color: var(--color-text-inverse);
   text-decoration: none;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
@@ -16,29 +16,38 @@
 .card:hover,
 .card:focus-visible {
   transform: translateY(-2px);
-  box-shadow: 0 3px 0 #111;
+  box-shadow: var(--shadow-card-strong);
+}
+
+.topRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
 }
 
 .number {
   font-size: 0.625rem;
   font-weight: 700;
   letter-spacing: 0.08em;
+  color: rgba(248, 250, 252, 0.74);
 }
 
 .card strong {
   max-width: 140px;
-  font-size: 0.875rem;
-  line-height: 1.25;
+  font-size: 0.9375rem;
+  line-height: 1.2;
 }
 
 .description {
-  color: var(--color-text-muted);
-  font-size: 0.6875rem;
-  line-height: 1.4;
+  color: rgba(248, 250, 252, 0.76);
+  font-size: 0.75rem;
+  line-height: 1.45;
 }
 
 .arrow {
   margin-top: auto;
   align-self: flex-end;
   font-size: 1.125rem;
+  color: var(--color-signal);
 }

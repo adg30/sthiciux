@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FlowContext } from '../../components/demo/FlowContext'
 import { ScarcityGrid, StabilizingIcon } from '../../components/ui/ScarcityGrid'
+import { StatusPill } from '../../components/ui/StatusPill'
 import { STABILIZING_DELAY_MS } from '../../data/constants'
 import styles from './ScarcityFlowPage.module.css'
 
@@ -12,6 +13,12 @@ const RESOURCES = [
   { id: 'rice', name: 'Rice', status: 'Limited', reports: 7, radius: '2.1 km', confidence: 81 },
   { id: 'packaging', name: 'Packaging', status: 'Stable', reports: 4, radius: '3.0 km', confidence: 76 },
 ] as const
+
+function getResourceTone(status: (typeof RESOURCES)[number]['status']) {
+  if (status === 'Critical') return 'critical'
+  if (status === 'Limited') return 'scarcity'
+  return 'signal'
+}
 
 export function ScarcityFlowPage() {
   const navigate = useNavigate()
@@ -85,6 +92,16 @@ export function ScarcityFlowPage() {
         Nearby business reports are checked before a possible shortage is treated
         as reliable.
       </FlowContext>
+      <section className={`card ${styles.signalContext}`} aria-labelledby="scarcity-verify-first">
+        <div className={styles.signalContextHeader}>
+          <StatusPill tone="scarcity">Verify first</StatusPill>
+          <h2 id="scarcity-verify-first">Treat reports as provisional until they stabilize</h2>
+        </div>
+        <p className={styles.signalContextLead}>
+          Reported shortages stay informational until Voucher verifies them against
+          nearby trusted businesses.
+        </p>
+      </section>
       <div className={styles.mapHeader}>
         <div>
           <strong>Barangay supply scan</strong>
@@ -117,7 +134,10 @@ export function ScarcityFlowPage() {
         <span><i className={styles.stableDot} /> Stable</span>
       </div>
       <div className={styles.signalSummary}>
-        <strong>{selected.name}: {selected.status}</strong>
+        <div className={styles.signalMetaRow}>
+          <strong>{selected.name}</strong>
+          <StatusPill tone={getResourceTone(selected.status)}>{selected.status}</StatusPill>
+        </div>
         <span>{selected.reports} peer reports within {selected.radius}</span>
       </div>
       <p className={styles.hint}>

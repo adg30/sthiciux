@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, type ComponentProps } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   AudienceIntro,
@@ -12,30 +12,38 @@ import { usePrototype } from '../context/prototype-context'
 import { getLevelLabel, getScoreLabel } from '../data/constants'
 import styles from './DashboardPage.module.css'
 
-const FLOW_CARDS = [
+const FLOW_CARDS: ComponentProps<typeof FlowHubCard>[] = [
   {
     number: '01',
     title: 'Find Trusted Suppliers',
     description: 'Discover suppliers whose access is governed by verified trust.',
     to: '/discovery',
+    statusLabel: 'Trust-gated',
+    statusTone: 'trust',
   },
   {
     number: '02',
     title: 'Understand Your Vouch Score',
     description: 'See how verified activity changes the network you can reach.',
     to: '/vouch-score',
+    statusLabel: 'Score-driven',
+    statusTone: 'signal',
   },
   {
     number: '03',
     title: 'Verify Nearby Scarcity',
     description: 'Check whether local shortage signals are reliable before acting.',
     to: '/scarcity',
+    statusLabel: 'Verified',
+    statusTone: 'scarcity',
   },
   {
     number: '04',
     title: 'Exchange Through the Mesh',
     description: 'Connect anonymously and confirm community exchanges together.',
     to: '/mesh',
+    statusLabel: 'Consent-based',
+    statusTone: 'ink',
   },
 ]
 
@@ -74,6 +82,10 @@ export function DashboardPage() {
           Build verified trust, understand nearby supply conditions, and exchange
           resources without giving up control of your identity.
         </p>
+        <div className={styles.heroMeta}>
+          <span>Signals from verified businesses</span>
+          <span>Identity stays protected until consent</span>
+        </div>
       </section>
 
       <section className={styles.flowSection} aria-labelledby="prototype-flows">

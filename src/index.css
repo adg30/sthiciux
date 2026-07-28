@@ -1,19 +1,47 @@
 :root {
-  --color-bg: #f5f5f5;
-  --color-surface: #ffffff;
-  --color-text: #111111;
-  --color-text-muted: #666666;
-  --color-border: #111111;
-  --color-border-light: #cccccc;
-  --color-fill: #111111;
-  --color-fill-muted: #e0e0e0;
-  --color-redaction: #111111;
+  --color-bg: #0b0f19;
+  --color-bg-app: #0b0f19;
+  --color-bg-frame: #09111b;
+  --color-surface: #f8fafc;
+  --color-surface-muted: #102a43;
+  --color-surface-elevated: #132032;
+  --color-text: #0b0f19;
+  --color-text-muted: #4a617a;
+  --color-text-inverse: #f8fafc;
+  --color-border: #102a43;
+  --color-border-light: #69809f;
+  --color-border-subtle: rgba(248, 250, 252, 0.16);
+  --color-fill: #102a43;
+  --color-fill-muted: #d9e2ec;
+  --color-redaction: #0b0f19;
+  --color-signal: #06b6d4;
+  --color-trust: #0f766e;
+  --color-scarcity: #d97706;
+  --color-critical: #b42318;
+  --color-ink: #102a43;
+  --color-status-signal-bg: rgba(6, 182, 212, 0.18);
+  --color-status-signal-border: rgba(6, 182, 212, 0.45);
+  --color-status-signal-text: #0b3c47;
+  --color-status-trust-bg: rgba(15, 118, 110, 0.18);
+  --color-status-trust-border: rgba(15, 118, 110, 0.45);
+  --color-status-trust-text: #0d4f4d;
+  --color-status-scarcity-bg: rgba(217, 119, 6, 0.18);
+  --color-status-scarcity-border: rgba(217, 119, 6, 0.45);
+  --color-status-scarcity-text: #7c4300;
+  --color-status-critical-bg: rgba(180, 35, 24, 0.16);
+  --color-status-critical-border: rgba(180, 35, 24, 0.45);
+  --color-status-critical-text: #7a1f17;
+  --color-status-ink-bg: rgba(16, 42, 67, 0.12);
+  --color-status-ink-border: rgba(16, 42, 67, 0.36);
+  --color-status-ink-text: #102a43;
+  --color-focus-ring: #06b6d4;
   --font-sans: 'Segoe UI', system-ui, -apple-system, sans-serif;
   --font-serif: Georgia, 'Times New Roman', serif;
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
-  --shadow-card: 0 1px 0 rgba(0, 0, 0, 0.06);
+  --shadow-card: 0 10px 24px rgba(3, 10, 18, 0.12);
+  --shadow-card-strong: 0 18px 36px rgba(3, 10, 18, 0.18);
   --app-max-width: 420px;
   --header-height: 56px;
   --nav-height: 52px;
@@ -37,7 +65,7 @@ body,
 body {
   font-family: var(--font-sans);
   color: var(--color-text);
-  background: #e8e8e8;
+  background: var(--color-bg-frame);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -55,7 +83,7 @@ a {
   min-height: 100%;
   display: flex;
   justify-content: center;
-  background: #e8e8e8;
+  background: var(--color-bg-frame);
 }
 
 .app-frame {
@@ -63,7 +91,7 @@ a {
   max-width: var(--app-max-width);
   min-height: 100vh;
   min-height: 100dvh;
-  background: var(--color-bg);
+  background: var(--color-bg-app);
   display: flex;
   flex-direction: column;
   position: relative;
@@ -94,6 +122,7 @@ a {
   font-weight: 600;
   text-align: center;
   margin: 8px 0 0;
+  color: var(--color-text-inverse);
 }
 
 .card {
@@ -101,6 +130,7 @@ a {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   padding: 16px;
+  box-shadow: var(--shadow-card);
 }
 
 .card--dashed {
@@ -124,6 +154,6 @@ a {
 }
 
 :focus-visible {
-  outline: 2px solid #111;
+  outline: 2px solid var(--color-focus-ring);
   outline-offset: 2px;
 }

@@ -11,6 +11,7 @@
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+  color: rgba(248, 250, 252, 0.72);
 }
 
 .mark {
@@ -56,11 +57,12 @@
   font-size: clamp(1.9rem, 8vw, 2.5rem);
   font-weight: 500;
   line-height: 1.04;
+  color: var(--color-text-inverse);
 }
 
 .lead {
   margin: -8px 0 0;
-  color: var(--color-text-muted);
+  color: rgba(248, 250, 252, 0.78);
   font-size: 0.875rem;
   line-height: 1.55;
 }

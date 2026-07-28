@@ -56,4 +56,15 @@ describe('DashboardPage audience narrative', () => {
       '/mesh',
     )
   })
+
+  it('shows semantic status tags that preview how each flow works', () => {
+    sessionStorage.setItem(INTRO_SESSION_KEY, 'true')
+
+    renderDashboard()
+
+    expect(screen.getByText('Trust-gated')).toBeInTheDocument()
+    expect(screen.getByText('Score-driven')).toBeInTheDocument()
+    expect(screen.getByText('Verified')).toBeInTheDocument()
+    expect(screen.getByText('Consent-based')).toBeInTheDocument()
+  })
 })

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FlowContext } from '../../components/demo/FlowContext'
 import { Button } from '../../components/ui/Button'
+import { StatusPill } from '../../components/ui/StatusPill'
 import styles from './DiscoverySearchPage.module.css'
 
 const FILTERS = ['Inventory', 'Distance', 'Supplier']
@@ -30,6 +31,21 @@ export function DiscoverySearchPage() {
         Supplier access depends on verified business trust, protecting both sides
         before identities are revealed.
       </FlowContext>
+
+      <section className={`card ${styles.trustSummary}`} aria-labelledby="discovery-trust-summary">
+        <div className={styles.trustHeader}>
+          <StatusPill tone="trust">Trust-gated</StatusPill>
+          <h2 id="discovery-trust-summary">Why some suppliers stay hidden</h2>
+        </div>
+        <p className={styles.trustLead}>
+          Only verified trust unlocks higher-access supplier paths for your
+          business.
+        </p>
+        <p className={styles.trustSupport}>
+          Identities stay hidden until both sides agree to connect, so discovery
+          begins with protected signals rather than exposed profiles.
+        </p>
+      </section>
 
       <label className="sr-only" htmlFor="supplier-search">
         Search suppliers and services
