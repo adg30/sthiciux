@@ -1,4 +1,5 @@
 import { ProgressBar } from './ProgressBar'
+import { getScoreTone } from '../../data/constants'
 import styles from './ScoreCard.module.css'
 
 interface ScoreCardProps {
@@ -9,12 +10,15 @@ interface ScoreCardProps {
 }
 
 export function ScoreCard({ score, statusLabel, levelLabel, onClick }: ScoreCardProps) {
+  const tone = getScoreTone(score)
   const content = (
     <>
       <span className={styles['score-card__label']}>Vouch Score</span>
       <span className={styles['score-card__value']}>{score}/100</span>
-      <ProgressBar value={score} />
-      <span className={styles['score-card__status']}>{statusLabel}</span>
+      <ProgressBar value={score} tone={tone} />
+      <span className={`${styles['score-card__status']} ${styles[`score-card__status--${tone}`]}`}>
+        {statusLabel}
+      </span>
       {levelLabel && <span className={styles['score-card__level']}>{levelLabel}</span>}
     </>
   )

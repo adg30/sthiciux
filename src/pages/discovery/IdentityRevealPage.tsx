@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Button } from '../../components/ui/Button'
 import { RedactionBar } from '../../components/ui/RedactionBar'
+import { StatusPill } from '../../components/ui/StatusPill'
 import { MOCK_SUPPLIERS } from '../../data/constants'
+import styles from './IdentityRevealPage.module.css'
 
 export function IdentityRevealPage() {
   const { supplierId } = useParams()
@@ -17,13 +19,19 @@ export function IdentityRevealPage() {
 
   return (
     <div className="screen">
+      <p className="screen-kicker screen-kicker--trust">Identity revealed</p>
       <h1 className="screen-title">Supplier Profile</h1>
 
-      <RedactionBar revealed={revealed} variant="photo" delay={0}>
-        Revealed Photo
-      </RedactionBar>
+      <div className={styles.hero}>
+        <RedactionBar revealed={revealed} variant="photo" delay={0}>
+          Revealed Photo
+        </RedactionBar>
+        <div className={styles.heroBadge}>
+          <StatusPill tone="trust">Verified supplier</StatusPill>
+        </div>
+      </div>
 
-      <div className="card">
+      <div className={`card ${styles.profileCard}`}>
         <RedactionBar revealed={revealed} variant="name" delay={150}>
           {supplier.name}
         </RedactionBar>
@@ -33,9 +41,18 @@ export function IdentityRevealPage() {
         <RedactionBar revealed={revealed} variant="line-medium" delay={450}>
           {supplier.category} · {supplier.distance}
         </RedactionBar>
+        <div className={styles.meta}>
+          <span className={styles.nodeCode}>{supplier.nodeCode}</span>
+          <span>{supplier.barangay}</span>
+        </div>
       </div>
 
-      <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 8 }}>
+      <div className={`card ${styles.commHint}`}>
+        <strong>Encrypted Comm-Link ready</strong>
+        <p>Messages use session keys and stay private between verified businesses.</p>
+      </div>
+
+      <div className={styles.actions}>
         <Button fullWidth onClick={() => navigate(`/comm-link/${supplier.id}`)}>
           Message Supplier
         </Button>

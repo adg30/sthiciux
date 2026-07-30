@@ -1,124 +1,218 @@
+import type { CSSProperties } from 'react'
+import type { SignalResult } from '../../data/constants'
 import styles from './ScarcityGrid.module.css'
+
+export type ScarcityGridPhase =
+  | 'ready'
+  | 'stabilizing'
+  | 'verified'
+  | 'no-data'
+  | 'forming'
+  | 'conflicting'
+  | 'normal'
 
 interface ScarcityGridProps {
   compact?: boolean
   interactive?: boolean
+  phase?: ScarcityGridPhase
   onEpicenterClick?: () => void
-  targetLabel?: string
+  itemLabel?: string
+  reports?: number
+  confidence?: number
+  statusLabel?: string
 }
 
-function buildGridLines(compact: boolean) {
-  const lines: { x1: number; y1: number; x2: number; y2: number; key: string }[] = []
-  const epicenterX = compact ? 72 : 68
-  const epicenterY = compact ? 76 : 70
-  const verticalPositions = compact
-    ? [8, 28, 46, 59, 66, 70, 73, 77, 84, 94]
-    : [6, 20, 36, 50, 59, 63, 66, 68, 70, 73, 77, 84, 94]
-  const horizontalPositions = compact
-    ? [8, 28, 48, 62, 69, 73, 76, 80, 87, 95]
-    : [6, 20, 37, 52, 61, 65, 68, 70, 72, 75, 79, 86, 95]
+/** Figma HF positions (node 15:1534) — percent of map card */
+const VERTICAL_X = [6.3, 18.4, 29.5, 38.9, 46.3, 52.1, 57.4, 63.7, 72.1, 83.7, 93.7]
+const HORIZONTAL_Y = [13.6, 22.4, 30.0, 36.8, 42.0, 46.0, 49.2, 53.2, 58.8, 65.6, 69.6]
+const CYAN_V = new Set([4, 5, 6, 7])
+const CYAN_H = new Set([4, 5, 6, 7])
 
-  verticalPositions.forEach((x, index) => {
-    lines.push({ x1: x, y1: 4, x2: x, y2: 96, key: `v-${index}` })
-  })
-  horizontalPositions.forEach((y, index) => {
-    lines.push({ x1: 4, y1: y, x2: 96, y2: y, key: `h-${index}` })
-  })
+function getCompression(phase: ScarcityGridPhase): number {
+  switch (phase) {
+    case 'stabilizing':
+      return 0.42
+    case 'verified':
+      return 0.72
+    case 'conflicting':
+      return 0.55
+    case 'forming':
+      return 0.28
+    case 'no-data':
+      return 0.08
+    case 'normal':
+      return 0
+    default:
+      return 0.2
+  }
+}
 
-  return { lines, epicenterX, epicenterY }
+function compress(value: number, epicenter: number, factor: number): number {
+  return value + (epicenter - value) * factor
+}
+
+function statusForPhase(phase: ScarcityGridPhase, fallback?: string): { text: string; tone: string } {
+  if (fallback) return { text: fallback, tone: styles['status--scarcity'] }
+  switch (phase) {
+    case 'verified':
+      return { text: 'VERIFIED SIGNAL', tone: styles['status--trust'] }
+    case 'stabilizing':
+      return { text: 'STABILIZING…', tone: styles['status--signal'] }
+    case 'forming':
+      return { text: 'SIGNAL FORMING', tone: styles['status--signal'] }
+    case 'conflicting':
+      return { text: 'CONFLICTING', tone: styles['status--critical'] }
+    case 'no-data':
+      return { text: 'NO SIGNAL DATA', tone: styles['status--ink'] }
+    case 'normal':
+      return { text: 'AVAILABILITY NORMAL', tone: styles['status--trust'] }
+    default:
+      return { text: 'SCARCITY SIGNAL · HIGH', tone: styles['status--scarcity'] }
+  }
 }
 
 export function ScarcityGrid({
   compact = false,
   interactive = false,
+  phase = 'ready',
   onEpicenterClick,
-  targetLabel = 'Cooking oil · Critical',
+  itemLabel = 'Cooking oil',
+  reports = 12,
+  confidence = 94,
+  statusLabel,
 }: ScarcityGridProps) {
-  const { lines, epicenterX, epicenterY } = buildGridLines(compact)
+  const compression = getCompression(phase)
+  const epicenter = 50
+  const status = statusForPhase(phase, statusLabel)
+  const isStabilizing = phase === 'stabilizing'
+  const showMarker =
+    phase !== 'no-data' && (phase !== 'normal' || compression === 0)
 
-  const svg = (
-    <svg
-      className={styles['scarcity-preview__svg']}
-      viewBox="0 0 100 100"
-      preserveAspectRatio="none"
-      aria-hidden="true"
+  const verticals = VERTICAL_X.map((x, index) => {
+    const cx = compress(x, epicenter, compression)
+    return {
+      key: `v-${index}`,
+      style: { left: `${cx}%` } as CSSProperties,
+      cyan: CYAN_V.has(index) && phase !== 'no-data' && phase !== 'normal',
+    }
+  })
+
+  const horizontals = HORIZONTAL_Y.map((y, index) => {
+    const cy = compress(y, epicenter + 4, compression)
+    return {
+      key: `h-${index}`,
+      style: { top: `${cy}%` } as CSSProperties,
+      cyan: CYAN_H.has(index) && phase !== 'no-data' && phase !== 'normal',
+    }
+  })
+
+  const map = (
+    <div
+      className={[
+        styles.map,
+        compact ? styles['map--compact'] : '',
+        isStabilizing ? styles['map--stabilizing'] : '',
+        styles[`map--${phase}`],
+      ]
+        .filter(Boolean)
+        .join(' ')}
     >
-      <rect x="4" y="4" width="92" height="92" rx="4" fill="#f8f8f8" />
-      <path d="M5 30 C24 22, 35 38, 51 30 S78 14, 96 23" fill="none" stroke="#b7b7b7" strokeWidth="2.4" />
-      <path d="M17 4 C22 24, 15 43, 25 58 S48 79, 43 96" fill="none" stroke="#c7c7c7" strokeWidth="1.8" />
-      <path d="M5 63 C27 67, 38 54, 56 61 S79 83, 96 74" fill="none" stroke="#c7c7c7" strokeWidth="1.8" />
-      {lines.map((line) => (
-        <line
-          key={line.key}
-          x1={line.x1}
-          y1={line.y1}
-          x2={line.x2}
-          y2={line.y2}
-          stroke="#111"
-          strokeWidth={compact ? 0.6 : 0.8}
+      <div className={styles.mapHeader}>
+        <span className={`${styles.status} ${status.tone}`}>{status.text}</span>
+        <span className={styles.peers}>{reports} PEER SIGNALS</span>
+      </div>
+
+      <div className={styles.gridArea} aria-hidden="true">
+        {verticals.map((line) => (
+          <span
+            key={line.key}
+            className={`${styles.vLine} ${line.cyan ? styles['line--cyan'] : ''}`}
+            style={line.style}
+          />
+        ))}
+        {horizontals.map((line) => (
+          <span
+            key={line.key}
+            className={`${styles.hLine} ${line.cyan ? styles['line--cyan'] : ''}`}
+            style={line.style}
+          />
+        ))}
+
+        {showMarker && (
+          <div className={styles.epicenter}>
+            <span className={styles.ringOuter} />
+            <span className={styles.ringMid} />
+            <span className={styles.point} />
+            {isStabilizing && (
+              <>
+                <span className={`${styles.scan} ${styles['scan--1']}`} />
+                <span className={`${styles.scan} ${styles['scan--2']}`} />
+                <span className={`${styles.scan} ${styles['scan--3']}`} />
+              </>
+            )}
+            {phase === 'verified' && <span className={styles.check}>✓</span>}
+            {phase === 'conflicting' && <span className={styles.warn}>!</span>}
+            {phase === 'normal' && <span className={styles.check}>✓</span>}
+          </div>
+        )}
+      </div>
+
+      <div className={styles.labels}>
+        <p className={styles.epicenterLabel}>EPICENTER / {itemLabel.toUpperCase()}</p>
+        <p className={styles.confidence}>
+          {phase === 'no-data'
+            ? 'INSUFFICIENT REPORTS'
+            : phase === 'forming'
+              ? 'GATHERING REPORTS'
+              : phase === 'conflicting'
+                ? 'UNRELIABLE SIGNAL'
+                : phase === 'normal'
+                  ? 'STABLE AVAILABILITY'
+                  : `${confidence}% CONFIDENCE`}
+        </p>
+      </div>
+
+      {interactive && phase === 'ready' && onEpicenterClick && (
+        <button
+          type="button"
+          className={styles.hitTarget}
+          onClick={onEpicenterClick}
+          aria-label={`Stabilize ${itemLabel} signal`}
         />
-      ))}
-      <g>
-        <circle cx="31" cy="38" r="3" fill="#888" />
-        <circle cx="42" cy="67" r="3" fill="#bbb" />
-        <circle cx="81" cy="42" r="3" fill="#ddd" stroke="#777" strokeWidth="0.8" />
-        <circle cx={epicenterX} cy={epicenterY} r={interactive ? 6 : 4} fill="none" stroke="#111" strokeWidth="1.2" />
-        <line x1={epicenterX - 8} y1={epicenterY} x2={epicenterX + 8} y2={epicenterY} stroke="#111" strokeWidth="1" />
-        <line x1={epicenterX} y1={epicenterY - 8} x2={epicenterX} y2={epicenterY + 8} stroke="#111" strokeWidth="1" />
-      </g>
-      {!compact && (
-        <>
-          <text x="7" y="13" fontSize="3.3" fill="#555">Poblacion</text>
-          <text x="68" y="16" fontSize="3.3" fill="#555">Market zone</text>
-          <text x="7" y="91" fontSize="3.3" fill="#555">South cluster</text>
-        </>
       )}
-    </svg>
+    </div>
   )
 
   if (compact) {
     return (
-      <div>
-        <h2 className={styles['scarcity-preview__section-title']}>Nearby supply status</h2>
+      <div className={styles.compactWrap}>
         <button
           type="button"
-          className={styles['scarcity-preview']}
+          className={styles.compactButton}
           onClick={onEpicenterClick}
-          aria-label="Open scarcity map. Cooking oil critical nearby."
+          aria-label={`Open supply signal. ${itemLabel} critical nearby.`}
         >
-          {svg}
+          {map}
         </button>
-        <p className={styles['scarcity-preview__caption']}>Cooking oil — critical nearby</p>
+        <p className={styles.caption}>{itemLabel} — check signal</p>
       </div>
     )
   }
 
-  return (
-    <div className={`card card--dashed ${styles['scarcity-preview']} ${styles['scarcity-preview--map']}`}>
-      {svg}
-      {interactive && (
-        <button
-          type="button"
-          className={styles['scarcity-preview__target-button']}
-          onClick={onEpicenterClick}
-          aria-label="Inspect critical scarcity epicenter"
-        >
-          <span>{targetLabel}</span>
-        </button>
-      )}
-    </div>
-  )
+  return map
 }
 
 export function StabilizingIcon() {
   return (
-    <svg width="120" height="120" viewBox="0 0 120 120" aria-hidden="true">
-      <circle cx="60" cy="60" r="48" fill="none" stroke="#111" strokeWidth="4" />
-      <line x1="60" y1="8" x2="60" y2="28" stroke="#111" strokeWidth="3" />
-      <line x1="60" y1="92" x2="60" y2="112" stroke="#111" strokeWidth="3" />
-      <line x1="8" y1="60" x2="28" y2="60" stroke="#111" strokeWidth="3" />
-      <line x1="92" y1="60" x2="112" y2="60" stroke="#111" strokeWidth="3" />
-      <circle cx="60" cy="60" r="6" fill="#111" />
-    </svg>
+    <div className={styles.stabilizingIcon} aria-hidden="true">
+      <span className={styles.ringOuter} />
+      <span className={styles.ringMid} />
+      <span className={styles.point} />
+    </div>
   )
+}
+
+export function signalResultToGridPhase(result: SignalResult): ScarcityGridPhase {
+  if (result === 'verified') return 'verified'
+  return result
 }

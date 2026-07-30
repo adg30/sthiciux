@@ -2,7 +2,7 @@ export const CAPABILITIES = [
   'Basic',
   'Regional',
   'Mesh',
-  'High-Trust',
+  'Premium',
   'Logistics',
   'Trust',
   'Insights',
@@ -25,21 +25,21 @@ export const SCORE_PRESETS: Record<ScorePreset, ScorePresetMeta> = {
     label: 'RESTRICTED',
     level: 'Level 1: Unverified',
     message:
-      'Earn 16 more points via a Mesh exchange or a peer vouch to reach Limited access.',
+      'Complete one verified exchange or trust-building action to reach Limited access.',
   },
   limited: {
     score: 45,
     label: 'LIMITED',
     level: 'Level 2: Limited',
     message:
-      'Earn 16 more points to unlock high-trust suppliers through verified network activity.',
+      '43 more points unlock Premium, Trust, Insights, and Priority access.',
   },
   full: {
     score: 88,
     label: 'FULL ACCESS',
     level: 'Level 3: Certified',
     message:
-      'All categories visible and accessible. Your network tier is certified.',
+      'All access categories are visible. Your network tier is certified.',
   },
 }
 
@@ -48,6 +48,8 @@ export const GATE_REQUIRED_SCORE = 31
 export const STABILIZING_DELAY_MS = 1000
 
 export const OTHER_PARTY_CONFIRM_DELAY_MS = 1800
+
+export const GATE_UNLOCK_NAV_DELAY_MS = 600
 
 export function getUnlockedCount(score: number): number {
   if (score >= SCORE_PRESETS.full.score) return CAPABILITIES.length
@@ -73,31 +75,70 @@ export function getScoreMessage(score: number): string {
   return SCORE_PRESETS.restricted.message
 }
 
+export function getScoreTone(score: number): ScorePreset {
+  if (score >= SCORE_PRESETS.full.score) return 'full'
+  if (score >= SCORE_PRESETS.limited.score) return 'limited'
+  return 'restricted'
+}
+
+export type VouchActionId =
+  | 'message-partner'
+  | 'mesh-exchange'
+  | 'lower-tier'
+  | 'verify-signal'
+
 export const VOUCH_ACTIONS = [
   {
-    id: 'verify-location',
-    title: 'Verify your business location',
-    description: 'Confirm your barangay registration to build baseline trust.',
+    id: 'message-partner' as const,
+    channel: 'COMM-LINK',
+    title: 'Message a past exchange partner',
+    description: 'Reconnect through the encrypted Comm-Link',
+    detailTitle: 'Comm-Link Action',
+    detailBody:
+      'Open an existing encrypted conversation and continue a verified working relationship.',
+    why: 'Returning to a known partner reinforces a trustworthy exchange history without asking anyone to vouch for you.',
+    potential: '+8',
+    continueTo: '/comm-link',
+    continueLabel: 'CONTINUE TO COMM-LINK',
   },
   {
-    id: 'mesh-exchange',
-    title: 'Complete a Mesh exchange',
-    description: 'Participate in a verified peer exchange within your network.',
+    id: 'mesh-exchange' as const,
+    channel: 'MESH',
+    title: 'Participate in a Mesh Exchange',
+    description: 'Complete a verified barangay exchange',
+    detailTitle: 'Mesh Exchange Action',
+    detailBody:
+      'Join a need or offer, agree on logistics, then confirm completion with the other business.',
+    why: 'Mutual confirmation creates a verified record. A vouch may be offered afterward, but is never requested.',
+    potential: '+12',
+    continueTo: '/mesh',
+    continueLabel: 'CONTINUE TO MESH BOARD',
   },
   {
-    id: 'supplier-forest',
-    title: 'Go through the supplier forest',
-    description: 'Navigate anonymized supplier listings to learn access patterns.',
+    id: 'lower-tier' as const,
+    channel: 'DISCOVER',
+    title: 'Try a lower-tier supplier',
+    description: 'Build a record through accessible suppliers',
+    detailTitle: 'Lower-Tier Supplier Action',
+    detailBody:
+      'Start with suppliers your current score can already reach, then grow access through verified activity.',
+    why: 'Accessible exchanges still create a trustworthy trail and help unlock higher-tier paths later.',
+    potential: '+6',
+    continueTo: '/discovery',
+    continueLabel: 'CONTINUE TO DISCOVERY',
   },
   {
-    id: 'peer-vouch',
-    title: 'Receive a peer vouch',
-    description: 'Voluntary endorsements from verified businesses raise your score.',
-  },
-  {
-    id: 'scarcity-signal',
-    title: 'Verify a scarcity signal',
-    description: 'Confirm local supply conditions to contribute network intelligence.',
+    id: 'verify-signal' as const,
+    channel: 'SIGNAL',
+    title: 'Verify a barangay supply signal',
+    description: 'Help confirm availability for the community',
+    detailTitle: 'Supply Signal Action',
+    detailBody:
+      'Stabilize a local scarcity report and treat the result as community intelligence, not a purchase signal alone.',
+    why: 'Helping verify local reports strengthens the network without exposing private business identities.',
+    potential: '+10',
+    continueTo: '/scarcity',
+    continueLabel: 'CONTINUE TO SUPPLY SIGNAL',
   },
 ]
 
@@ -110,6 +151,8 @@ export interface MockSupplier {
   barangay: string
   trustState: SupplierTrustState
   availabilityNote: string
+  nodeCode: string
+  matchConfidence: string
 }
 
 export const MOCK_SUPPLIERS = [
@@ -121,6 +164,8 @@ export const MOCK_SUPPLIERS = [
     barangay: 'Poblacion',
     trustState: 'available',
     availabilityNote: 'Restocks from nearby verified vendors every Tuesday and Friday.',
+    nodeCode: 'NX-04',
+    matchConfidence: '92% match',
   },
   {
     id: 's2',
@@ -130,6 +175,8 @@ export const MOCK_SUPPLIERS = [
     barangay: 'Market zone',
     trustState: 'gated',
     availabilityNote: 'Higher-volume stock requires stronger verified trust before identity reveal.',
+    nodeCode: 'NX-11',
+    matchConfidence: '88% match',
   },
   {
     id: 's3',
@@ -138,9 +185,18 @@ export const MOCK_SUPPLIERS = [
     name: 'Metro Pack Solutions',
     barangay: 'South cluster',
     trustState: 'gated',
-    availabilityNote: 'Shared through the supplier forest to reduce unnecessary identity exposure.',
+    availabilityNote: 'Shared through trust-gated discovery to reduce unnecessary identity exposure.',
+    nodeCode: 'NX-19',
+    matchConfidence: '81% match',
   },
 ] satisfies MockSupplier[]
+
+export type SignalResult =
+  | 'verified'
+  | 'no-data'
+  | 'forming'
+  | 'conflicting'
+  | 'normal'
 
 export type ScarcitySignalStatus = 'Critical' | 'Limited' | 'Stable'
 export interface ScarcitySignal {
@@ -192,12 +248,16 @@ export interface MeshItem {
   id: string
   businessId: string
   name: string
+  shortLabel: string
   distance: string
   business: string
   relationship: MeshRelationshipState
   barangay: string
   consentSummary: string
   fulfillmentNote: string
+  quantity: string
+  neededBy: string
+  exchangeType: string
 }
 
 export const MESH_ITEMS = [
@@ -205,56 +265,76 @@ export const MESH_ITEMS = [
     id: 'm1',
     businessId: 'b1',
     name: 'Cooking oil',
-    distance: '~2 km',
-    business: 'Sari-Sari Provisions',
+    shortLabel: 'Oil',
+    distance: '1.8 km',
+    business: 'Aling Rosa Store',
     relationship: 'connected',
     barangay: 'Poblacion',
     consentSummary: 'Identity already shared through an existing Mesh relationship.',
-    fulfillmentNote: 'Ready for direct exchange coordination through Messages.',
+    fulfillmentNote: 'Ready for direct exchange coordination through Comm-Link.',
+    quantity: '12 × 1L bottles',
+    neededBy: 'Tomorrow · 4:00 PM',
+    exchangeType: 'Purchase or equivalent stock',
   },
   {
     id: 'm2',
     businessId: 'b2',
-    name: 'Rice (25kg)',
+    name: 'Rice',
+    shortLabel: 'Rice',
     distance: '~1 km',
     business: 'Grain Hub MSME',
     relationship: 'pending',
     barangay: 'Market zone',
     consentSummary: 'A request is in progress, but both businesses still need to confirm.',
     fulfillmentNote: 'Hold identity details until both sides explicitly accept.',
+    quantity: '2 × 25kg sacks',
+    neededBy: 'Friday · morning',
+    exchangeType: 'Direct swap or purchase',
   },
   {
     id: 'm3',
     businessId: 'b3',
-    name: 'Packaging boxes',
+    name: 'Packaging',
+    shortLabel: 'Pack',
     distance: '~3 km',
     business: 'PackRight Trading',
     relationship: 'anonymous',
     barangay: 'South cluster',
     consentSummary: 'Inventory is visible first while both identities remain protected.',
     fulfillmentNote: 'Use the listing to decide whether to request a protected introduction.',
+    quantity: '40 medium boxes',
+    neededBy: 'This week',
+    exchangeType: 'Purchase',
   },
   {
     id: 'm4',
     businessId: 'b4',
     name: 'Bottled water',
+    shortLabel: 'Water',
     distance: '~2.5 km',
     business: 'ClearSpring Retail',
     relationship: 'anonymous',
     barangay: 'Riverside',
     consentSummary: 'The Mesh hides identity until both parties accept the exchange.',
     fulfillmentNote: 'Good for urgent supply checks without exposing the seller immediately.',
+    quantity: '8 cases',
+    neededBy: 'Tomorrow · noon',
+    exchangeType: 'Purchase',
   },
   {
     id: 'm5',
     businessId: 'b5',
     name: 'Delivery crates',
+    shortLabel: 'Crates',
     distance: '~4 km',
     business: 'North Route Logistics',
     relationship: 'anonymous',
     barangay: 'North route',
     consentSummary: 'Shared as a protected network post, not a public listing.',
     fulfillmentNote: 'Useful when a logistics need is real but contacts should stay private.',
+    quantity: '15 crates',
+    neededBy: 'Next delivery window',
+    exchangeType: 'Borrow / return',
   },
 ] satisfies MeshItem[]
 
@@ -268,4 +348,10 @@ export const COMM_CONTACTS = [
     detail: `${item.name} · ${item.distance}`,
     source: 'Mesh Connection',
   })),
+]
+
+export const RECENT_SEARCHES = [
+  'Cooking oil suppliers nearby',
+  'Packaging within 3 km',
+  'Rice wholesaler',
 ]

@@ -1,7 +1,9 @@
 import { createContext, useContext } from 'react'
-import type { ScorePreset } from '../data/constants'
+import type { ScorePreset, SignalResult } from '../data/constants'
 
 export type SimulatedOutcome = 'accept' | 'decline'
+export type CompletionMode = 'pending' | 'both'
+
 export interface PrototypeSessionSnapshot {
   scoreLevelLabel: string
   startedActionsCount: number
@@ -26,6 +28,12 @@ export interface PrototypeContextValue {
   startAction: (actionId: string) => void
   verifiedScarcityId: string | null
   setVerifiedScarcityId: (signalId: string | null) => void
+  signalResult: SignalResult
+  setSignalResult: (value: SignalResult) => void
+  meshPostCount: number
+  setMeshPostCount: (value: number) => void
+  completionMode: CompletionMode
+  setCompletionMode: (value: CompletionMode) => void
   prototypeSession: PrototypeSessionSnapshot
 }
 

@@ -17,16 +17,19 @@
   letter-spacing: 0.04em;
   cursor: pointer;
   text-transform: uppercase;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
 }
 
 .demo-settings__panel {
   margin-top: 8px;
-  background: #fff;
+  max-height: min(70vh, 560px);
+  overflow: auto;
+  background: #fff8f3;
   border: 2px dashed #ff6b35;
   border-radius: var(--radius-sm);
   padding: 12px;
   font-size: 0.75rem;
+  color: #1f2937;
 }
 
 .demo-settings__title {
@@ -46,10 +49,11 @@
 .demo-settings__subtitle {
   margin: 12px 0 6px;
   padding-top: 10px;
-  border-top: 1px solid var(--color-border-light);
+  border-top: 1px solid #fdba8c;
   font-size: 0.6875rem;
   font-weight: 700;
   text-transform: uppercase;
+  color: #9a3412;
 }
 
 .demo-settings__option {
@@ -57,6 +61,7 @@
   align-items: center;
   gap: 8px;
   cursor: pointer;
+  color: #1f2937;
 }
 
 .demo-settings__option input {
@@ -66,5 +71,5 @@
 .demo-settings__note {
   margin: 8px 0 0;
   font-size: 0.625rem;
-  color: var(--color-text-muted);
+  color: #6b7280;
 }

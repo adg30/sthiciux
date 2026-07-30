@@ -1,4 +1,5 @@
 import { Button } from '../ui/Button'
+import { SignalTip } from '../ui/SignalTip'
 import styles from './AudienceIntro.module.css'
 
 export const INTRO_SESSION_KEY = 'voucher-audience-intro-seen'
@@ -8,56 +9,40 @@ interface AudienceIntroProps {
 }
 
 const PRINCIPLES = [
-  {
-    number: '01',
-    title: 'Verified business trust',
-    description: 'Verified activity builds access without turning trust into a paid subscription.',
-  },
-  {
-    number: '02',
-    title: 'Barangay supply signals',
-    description: 'Nearby reports are checked before a possible shortage is treated as reliable.',
-  },
-  {
-    number: '03',
-    title: 'Anonymous, consent-based exchange',
-    description: 'Businesses control when identities are revealed and confirm exchanges together.',
-  },
+  { number: '01', title: 'Trust opens supply' },
+  { number: '02', title: 'Check signals first' },
+  { number: '03', title: 'Connect only with consent' },
 ]
 
 export function AudienceIntro({ onContinue }: AudienceIntroProps) {
   return (
     <section className={styles.intro} aria-labelledby="audience-intro-title">
-      <div className={styles.eyebrow}>Barangay trust and supply network</div>
-      <div className={styles.mark} aria-hidden="true">
-        <span />
-        <span />
-        <span />
-        <span />
-      </div>
-      <h1 id="audience-intro-title">Trade with clarity, even when supply is uncertain.</h1>
+      <p className={styles.eyebrow}>Barangay supply network</p>
+      <h1 id="audience-intro-title">Trade clearly when supply is uncertain.</h1>
       <p className={styles.lead}>
-        Voucher helps Filipino MSMEs build verified trust, understand nearby scarcity,
-        and exchange supplies safely.
+        KaUgnay helps sari-sari and MSME owners find trusted supply nearby.
       </p>
 
       <ol className={styles.principles}>
         {PRINCIPLES.map((principle) => (
           <li key={principle.number}>
             <span className={styles.number}>{principle.number}</span>
-            <div>
-              <h2>{principle.title}</h2>
-              <p>{principle.description}</p>
-            </div>
+            <h2>{principle.title}</h2>
           </li>
         ))}
       </ol>
 
+      <SignalTip label="Ano ito?">
+        <p>
+          Verified activity builds access. Local reports are checked before you act.
+          Identities stay hidden until both sides agree.
+        </p>
+      </SignalTip>
+
       <div className={styles.action}>
         <Button fullWidth onClick={onContinue}>
-          Explore Voucher
+          Enter KaUgnay
         </Button>
-        <p>No sign-in required. This is a guided product prototype.</p>
       </div>
     </section>
   )

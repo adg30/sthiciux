@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { Button } from '../../components/ui/Button'
 import { ConnectionDiagram } from '../../components/ui/ConnectionDiagram'
+import { StatusPill } from '../../components/ui/StatusPill'
 import { MESH_ITEMS } from '../../data/constants'
 import { usePrototype } from '../../context/prototype-context'
+import styles from './MeshConfirmPage.module.css'
 
 type Phase = 'confirm' | 'waiting' | 'accepted' | 'declined'
 
@@ -29,12 +31,10 @@ export function MeshConfirmPage() {
   if (phase === 'declined') {
     return (
       <div className="screen">
-        <h1 className="screen-title">Request Declined</h1>
-        <ConnectionDiagram
-          state="declined"
-          message="The business declined to start an exchange."
-        />
-        <div style={{ marginTop: 'auto' }}>
+        <p className="screen-kicker screen-kicker--critical">Request declined</p>
+        <h1 className="screen-title">Exchange not started</h1>
+        <ConnectionDiagram state="declined" message="The business declined to start an exchange." />
+        <div className={styles.footer}>
           <Button fullWidth onClick={() => navigate('/mesh')}>
             Back to mesh board
           </Button>
@@ -46,11 +46,18 @@ export function MeshConfirmPage() {
   if (phase === 'accepted') {
     return (
       <div className="screen">
-        <h1 className="screen-title">Request Accepted</h1>
+        <p className="screen-kicker screen-kicker--trust">Request accepted</p>
+        <h1 className="screen-title">New connection forming</h1>
         <ConnectionDiagram state="accepted" otherName={item.business} />
-        <div style={{ marginTop: 'auto' }}>
+        <div className={`card ${styles.summary}`}>
+          <StatusPill tone="trust">Accepted</StatusPill>
+          <p>
+            {item.shortLabel} · {item.quantity} · {item.exchangeType}
+          </p>
+        </div>
+        <div className={styles.footer}>
           <Button fullWidth onClick={() => navigate(`/mesh/logistics/${item.id}`)}>
-            Arrange Logistics
+            Arrange logistics
           </Button>
         </div>
       </div>
@@ -59,20 +66,43 @@ export function MeshConfirmPage() {
 
   return (
     <div className="screen">
-      <h1 className="screen-title">Confirm Request</h1>
+      <p className="screen-kicker">Anonymous request</p>
+      <h1 className="screen-title">Confirm request</h1>
       <ConnectionDiagram state={phase === 'waiting' ? 'confirm-you' : 'pending'} />
 
+      <div className={`card ${styles.itemCard}`}>
+        <dl className={styles.itemDetails}>
+          <div>
+            <dt>Item</dt>
+            <dd>{item.name}</dd>
+          </div>
+          <div>
+            <dt>Quantity</dt>
+            <dd>{item.quantity}</dd>
+          </div>
+          <div>
+            <dt>Needed by</dt>
+            <dd>{item.neededBy}</dd>
+          </div>
+          <div>
+            <dt>Exchange</dt>
+            <dd>{item.exchangeType}</dd>
+          </div>
+        </dl>
+      </div>
+
       {phase === 'waiting' && (
-        <p style={{ textAlign: 'center', fontSize: '0.8125rem', color: 'var(--color-text-muted)' }}>
-          You — Confirmed · Other business — Pending
+        <p className={styles.waitingNote}>
+          <StatusPill tone="scarcity">Pending</StatusPill>
+          You — confirmed · Other business — pending
         </p>
       )}
 
-      <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 8 }}>
+      <div className={styles.footer}>
         {phase === 'confirm' && (
           <>
             <Button fullWidth onClick={() => setPhase('waiting')}>
-              Send Request
+              Send request
             </Button>
             <Button variant="secondary" fullWidth onClick={() => navigate(-1)}>
               Cancel

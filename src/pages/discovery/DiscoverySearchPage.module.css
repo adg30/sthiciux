@@ -1,16 +1,9 @@
-.search {
-  width: 100%;
-  padding: 12px 14px;
-  border: 1px solid var(--color-border-light);
-  border-radius: var(--radius-sm);
-  background: var(--color-surface);
-  font-size: 0.875rem;
-}
-
 .trustSummary {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  background: linear-gradient(145deg, var(--color-surface-elevated), var(--color-surface));
+  border-color: rgba(20, 184, 166, 0.28);
 }
 
 .trustHeader {
@@ -23,6 +16,7 @@
 .trustHeader h2 {
   margin: 0;
   font-size: 0.875rem;
+  font-weight: 600;
 }
 
 .trustLead {
@@ -38,6 +32,41 @@
   line-height: 1.5;
 }
 
+.searchWrap {
+  position: relative;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-signal);
+  font-size: 1rem;
+  pointer-events: none;
+}
+
+.search {
+  width: 100%;
+  padding: 14px 14px 14px 40px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-muted);
+  font-size: 0.875rem;
+  color: var(--color-text);
+  transition: border-color var(--motion-fast) ease, box-shadow var(--motion-fast) ease;
+}
+
+.search::placeholder {
+  color: var(--color-text-muted);
+}
+
+.search:focus {
+  outline: none;
+  border-color: var(--color-signal);
+  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.18);
+}
+
 .filters {
   display: flex;
   gap: 8px;
@@ -46,30 +75,81 @@
 
 .chip {
   padding: 8px 14px;
-  border: 1px solid var(--color-border-light);
+  border: 1px solid var(--color-border);
   border-radius: 999px;
-  background: var(--color-surface);
+  background: var(--color-surface-muted);
   font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
   cursor: pointer;
   min-height: 36px;
+  transition:
+    background var(--motion-fast) ease,
+    border-color var(--motion-fast) ease,
+    color var(--motion-fast) ease;
+}
+
+.chip:hover {
+  border-color: var(--color-signal);
+  color: var(--color-text);
 }
 
 .chip--active {
-  background: var(--color-fill);
-  color: var(--color-text-inverse);
+  background: rgba(6, 182, 212, 0.16);
+  border-color: var(--color-status-signal-border);
+  color: var(--color-status-signal-text);
 }
 
 .recent {
-  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .recentTitle {
-  font-size: 0.875rem;
-  margin: 0 0 12px;
-}
-
-.recentPlaceholder {
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: var(--color-text-muted);
   margin: 0;
+}
+
+.recentList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.recentItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text);
+  font-size: 0.8125rem;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--motion-fast) ease;
+}
+
+.recentItem:hover {
+  background: var(--color-surface-muted);
+}
+
+.recentIcon {
+  color: var(--color-signal);
+  font-size: 0.875rem;
+}
+
+.actions {
+  margin-top: auto;
+  padding-top: 8px;
 }

@@ -15,34 +15,34 @@ import styles from './DashboardPage.module.css'
 const FLOW_CARDS: ComponentProps<typeof FlowHubCard>[] = [
   {
     number: '01',
-    title: 'Find Trusted Suppliers',
-    description: 'Discover suppliers whose access is governed by verified trust.',
+    title: 'Find suppliers',
+    description: 'Trust-gated supply nearby',
     to: '/discovery',
-    statusLabel: 'Trust-gated',
+    statusLabel: 'Discover',
     statusTone: 'trust',
   },
   {
     number: '02',
-    title: 'Understand Your Vouch Score',
-    description: 'See how verified activity changes the network you can reach.',
+    title: 'Vouch Score',
+    description: 'See what you can unlock',
     to: '/vouch-score',
-    statusLabel: 'Score-driven',
+    statusLabel: 'Profile',
     statusTone: 'signal',
   },
   {
     number: '03',
-    title: 'Verify Nearby Scarcity',
-    description: 'Check whether local shortage signals are reliable before acting.',
+    title: 'Supply signal',
+    description: 'Check if a shortage is real',
     to: '/scarcity',
-    statusLabel: 'Verified',
+    statusLabel: 'Signal',
     statusTone: 'scarcity',
   },
   {
     number: '04',
-    title: 'Exchange Through the Mesh',
-    description: 'Connect anonymously and confirm community exchanges together.',
+    title: 'Mesh exchange',
+    description: 'Trade with consent',
     to: '/mesh',
-    statusLabel: 'Consent-based',
+    statusLabel: 'Mesh',
     statusTone: 'ink',
   },
 ]
@@ -64,7 +64,7 @@ export function DashboardPage() {
     try {
       sessionStorage.setItem(INTRO_SESSION_KEY, 'true')
     } catch {
-      // The prototype remains usable when browser storage is unavailable.
+      // Prototype remains usable without storage.
     }
     setShowIntroduction(false)
   }
@@ -76,21 +76,14 @@ export function DashboardPage() {
   return (
     <div className="screen">
       <section className={styles.hero}>
-        <span className={styles.eyebrow}>Your barangay supply network</span>
-        <h1>Explore the Voucher network</h1>
-        <p>
-          Build verified trust, understand nearby supply conditions, and exchange
-          resources without giving up control of your identity.
-        </p>
-        <div className={styles.heroMeta}>
-          <span>Signals from verified businesses</span>
-          <span>Identity stays protected until consent</span>
-        </div>
+        <span className={styles.eyebrow}>Your network</span>
+        <h1>KaUgnay</h1>
+        <p>Trusted supply for your barangay store.</p>
       </section>
 
       <section className={styles.flowSection} aria-labelledby="prototype-flows">
         <h2 id="prototype-flows" className={styles.sectionHeading}>
-          Four ways Voucher supports MSMEs
+          Start here
         </h2>
         <div className={styles.flowGrid}>
           {FLOW_CARDS.map((flow) => (
@@ -101,7 +94,7 @@ export function DashboardPage() {
 
       <section className={styles.statusSection} aria-labelledby="network-status">
         <h2 id="network-status" className={styles.sectionHeading}>
-          Your network today
+          Today
         </h2>
         <ScoreCard
           score={vouchScore}

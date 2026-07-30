@@ -1,51 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap');
+
 :root {
+  /* Surfaces */
   --color-bg: #0b0f19;
   --color-bg-app: #0b0f19;
-  --color-bg-frame: #09111b;
-  --color-surface: #f8fafc;
-  --color-surface-muted: #102a43;
+  --color-bg-frame: #070a12;
+  --color-surface: #111827;
+  --color-surface-muted: #172033;
   --color-surface-elevated: #132032;
-  --color-text: #0b0f19;
-  --color-text-muted: #4a617a;
-  --color-text-inverse: #f8fafc;
-  --color-border: #102a43;
+  --color-surface-light: #f8fafc;
+
+  /* Text */
+  --color-text: #f8fafc;
+  --color-text-muted: #94a3b8;
+  --color-text-inverse: #0b0f19;
+  --color-text-on-light: #102a43;
+
+  /* Borders / fills */
+  --color-border: #334155;
   --color-border-light: #69809f;
-  --color-border-subtle: rgba(248, 250, 252, 0.16);
-  --color-fill: #102a43;
-  --color-fill-muted: #d9e2ec;
+  --color-border-subtle: rgba(248, 250, 252, 0.12);
+  --color-fill: #06b6d4;
+  --color-fill-muted: #172033;
   --color-redaction: #0b0f19;
+
+  /* Semantic */
   --color-signal: #06b6d4;
-  --color-trust: #0f766e;
-  --color-scarcity: #d97706;
-  --color-critical: #b42318;
-  --color-ink: #102a43;
-  --color-status-signal-bg: rgba(6, 182, 212, 0.18);
+  --color-trust: #14b8a6;
+  --color-scarcity: #f59e0b;
+  --color-critical: #ef4444;
+  --color-ink: #94a3b8;
+
+  /* Status chips */
+  --color-status-signal-bg: rgba(6, 182, 212, 0.16);
   --color-status-signal-border: rgba(6, 182, 212, 0.45);
-  --color-status-signal-text: #0b3c47;
-  --color-status-trust-bg: rgba(15, 118, 110, 0.18);
-  --color-status-trust-border: rgba(15, 118, 110, 0.45);
-  --color-status-trust-text: #0d4f4d;
-  --color-status-scarcity-bg: rgba(217, 119, 6, 0.18);
-  --color-status-scarcity-border: rgba(217, 119, 6, 0.45);
-  --color-status-scarcity-text: #7c4300;
-  --color-status-critical-bg: rgba(180, 35, 24, 0.16);
-  --color-status-critical-border: rgba(180, 35, 24, 0.45);
-  --color-status-critical-text: #7a1f17;
-  --color-status-ink-bg: rgba(16, 42, 67, 0.12);
-  --color-status-ink-border: rgba(16, 42, 67, 0.36);
-  --color-status-ink-text: #102a43;
+  --color-status-signal-text: #67e8f9;
+  --color-status-trust-bg: rgba(20, 184, 166, 0.16);
+  --color-status-trust-border: rgba(20, 184, 166, 0.45);
+  --color-status-trust-text: #5eead4;
+  --color-status-scarcity-bg: rgba(245, 158, 11, 0.16);
+  --color-status-scarcity-border: rgba(245, 158, 11, 0.45);
+  --color-status-scarcity-text: #fbbf24;
+  --color-status-critical-bg: rgba(239, 68, 68, 0.16);
+  --color-status-critical-border: rgba(239, 68, 68, 0.45);
+  --color-status-critical-text: #fca5a5;
+  --color-status-ink-bg: rgba(148, 163, 184, 0.12);
+  --color-status-ink-border: rgba(148, 163, 184, 0.36);
+  --color-status-ink-text: #94a3b8;
+
   --color-focus-ring: #06b6d4;
-  --font-sans: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  --font-serif: Georgia, 'Times New Roman', serif;
+
+  /* Typography */
+  --font-display: 'Syne', sans-serif;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-serif: var(--font-display);
+
+  /* Geometry */
   --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --shadow-card: 0 10px 24px rgba(3, 10, 18, 0.12);
-  --shadow-card-strong: 0 18px 36px rgba(3, 10, 18, 0.18);
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --shadow-card: 0 10px 24px rgba(3, 10, 18, 0.28);
+  --shadow-card-strong: 0 18px 36px rgba(3, 10, 18, 0.36);
   --app-max-width: 420px;
-  --header-height: 56px;
-  --nav-height: 52px;
+  --header-height: 72px;
+  --nav-height: 70px;
   --touch-min: 44px;
+
+  /* Motion */
+  --motion-fast: 150ms;
+  --motion-base: 220ms;
+  --motion-slow: 420ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-fast: 0ms;
+    --motion-base: 0ms;
+    --motion-slow: 0ms;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 *,
@@ -71,8 +112,10 @@ body {
 
 button,
 input,
-textarea {
+textarea,
+select {
   font: inherit;
+  color: inherit;
 }
 
 a {
@@ -91,7 +134,9 @@ a {
   max-width: var(--app-max-width);
   min-height: 100vh;
   min-height: 100dvh;
-  background: var(--color-bg-app);
+  background:
+    radial-gradient(ellipse 120% 60% at 50% -10%, rgba(6, 182, 212, 0.08), transparent 55%),
+    var(--color-bg-app);
   display: flex;
   flex-direction: column;
   position: relative;
@@ -102,7 +147,7 @@ a {
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 0 16px 16px;
+  padding: 0 20px 16px;
   min-height: 0;
 }
 
@@ -115,14 +160,46 @@ a {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  animation: screen-enter var(--motion-slow) ease-out;
 }
 
 .screen-title {
-  font-size: 1.125rem;
-  font-weight: 600;
-  text-align: center;
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 700;
+  text-align: left;
   margin: 8px 0 0;
-  color: var(--color-text-inverse);
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.screen-kicker {
+  margin: 0;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-signal);
+}
+
+.screen-kicker--caution {
+  color: var(--color-scarcity);
+}
+
+.screen-kicker--trust {
+  color: var(--color-trust);
+}
+
+.screen-kicker--critical {
+  color: var(--color-critical);
+}
+
+.screen-lead {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  line-height: 1.45;
 }
 
 .card {
@@ -130,11 +207,16 @@ a {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   padding: 16px;
-  box-shadow: var(--shadow-card);
+  box-shadow: none;
 }
 
 .card--dashed {
   border-style: dashed;
+}
+
+.card--light {
+  background: var(--color-surface-light);
+  color: var(--color-text-on-light);
 }
 
 .muted {
@@ -156,4 +238,39 @@ a {
 :focus-visible {
   outline: 2px solid var(--color-focus-ring);
   outline-offset: 2px;
+}
+
+@keyframes screen-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-signal {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+}
+
+@keyframes shimmer-line {
+  0% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0.35;
+  }
 }

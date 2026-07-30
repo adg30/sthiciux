@@ -18,7 +18,7 @@ export function AccessTiles({ unlockedCount }: AccessTilesProps) {
             aria-label={`${capability} ${unlocked ? 'unlocked' : 'locked'}`}
           >
             <span className={styles['access-tile__icon']} aria-hidden="true">
-              {unlocked ? '✓' : 'Locked'}
+              {unlocked ? '✓' : '—'}
             </span>
             <span className={styles['access-tile__label']}>{capability}</span>
           </div>

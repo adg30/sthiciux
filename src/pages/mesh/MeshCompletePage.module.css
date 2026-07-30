@@ -1,0 +1,34 @@
+.summary {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.summaryRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.summary p {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+.modeNote {
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--color-status-scarcity-border);
+  background: var(--color-status-scarcity-bg);
+  color: var(--color-status-scarcity-text) !important;
+  font-size: 0.75rem !important;
+}
+
+.footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Button } from '../../components/ui/Button'
+import { StatusPill } from '../../components/ui/StatusPill'
 import { usePrototype } from '../../context/prototype-context'
 import { MESH_ITEMS } from '../../data/constants'
 import styles from './MeshVouchPage.module.css'
@@ -21,16 +22,18 @@ export function MeshVouchPage() {
   if (submitted) {
     return (
       <div className="screen">
-        <h1 className="screen-title">Vouch Submitted</h1>
+        <p className="screen-kicker screen-kicker--trust">Vouch recorded</p>
+        <h1 className="screen-title">Vouch submitted</h1>
         <div className="card">
-          <p style={{ margin: 0, lineHeight: 1.5 }}>
+          <StatusPill tone="trust">Voluntary</StatusPill>
+          <p className={styles.successText}>
             Your voluntary vouch for {item.business} has been recorded. Vouches are initiated by
             endorsers — they cannot be formally requested.
           </p>
         </div>
-        <div style={{ marginTop: 'auto' }}>
+        <div className={styles.footer}>
           <Button fullWidth onClick={() => navigate('/')}>
-            Return to Dashboard
+            Return to dashboard
           </Button>
         </div>
       </div>
@@ -39,13 +42,17 @@ export function MeshVouchPage() {
 
   return (
     <div className="screen">
-      <h1 className="screen-title">Optional Vouch</h1>
+      <p className="screen-kicker">First verified exchange</p>
+      <h1 className="screen-title">Optional vouch</h1>
 
-      <p className={styles.question}>Vouch for this business?</p>
-      <p className={styles.note}>
-        You confirmed that the goods were received. This endorsement is voluntary and initiated by you;
-        the other business did not request it.
-      </p>
+      <div className={`card ${styles.context}`}>
+        <StatusPill tone="trust">New connection</StatusPill>
+        <p className={styles.question}>Vouch for {item.business}?</p>
+        <p className={styles.note}>
+          This optional step appears after your first verified exchange with a newly connected
+          business. Existing connections like Aling Rosa skip vouch and use Comm-Link instead.
+        </p>
+      </div>
 
       <label className="sr-only" htmlFor="vouch-text">
         Write your vouch
@@ -59,7 +66,7 @@ export function MeshVouchPage() {
         rows={6}
       />
 
-      <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 8 }}>
+      <div className={styles.footer}>
         <Button fullWidth onClick={handleSubmit} disabled={!text.trim()}>
           Submit vouch
         </Button>

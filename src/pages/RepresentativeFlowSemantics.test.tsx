@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it } from 'vitest'
@@ -10,8 +10,9 @@ import { VouchScorePage } from './VouchScorePage'
 describe('Representative flow semantics', () => {
   function renderVouchScorePage(preset?: 'restricted' | 'limited' | 'full') {
     if (preset) {
-      localStorage.setItem('voucher-prototype-preset', preset)
+      localStorage.setItem('kaugnay-prototype-preset', preset)
     } else {
+      localStorage.removeItem('kaugnay-prototype-preset')
       localStorage.removeItem('voucher-prototype-preset')
     }
 
@@ -27,19 +28,23 @@ describe('Representative flow semantics', () => {
   it('frames the current Vouch Score as an access state, not a subscription tier', () => {
     renderVouchScorePage()
 
-    expect(screen.getByText('Current access state')).toBeInTheDocument()
-    expect(screen.getByText('Score-driven')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Access Capabilities' })).toBeInTheDocument()
+    expect(screen.getByText('Next Threshold')).toBeInTheDocument()
+    expect(screen.getByText('RESTRICTED')).toBeInTheDocument()
+    expect(screen.getByText('0 of 8 capabilities unlocked')).toBeInTheDocument()
   })
 
-  it('shows the terminal Vouch Score state as fully unlocked High-Trust access', () => {
+  it('shows the terminal Vouch Score state as fully unlocked Premium access', () => {
     renderVouchScorePage('full')
 
     expect(screen.getByText('All thresholds unlocked')).toBeInTheDocument()
-    expect(screen.getByText('High-Trust ready')).toBeInTheDocument()
+    expect(screen.getByText('FULL ACCESS')).toBeInTheDocument()
     expect(screen.getByText('8 of 8 capabilities unlocked')).toBeInTheDocument()
+    expect(screen.getByText('Premium')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Generate Trust Card' })).toBeInTheDocument()
   })
 
-  it('explains that scarcity signals must be verified before action', () => {
+  it('keeps the supply signal calm and asks users to stabilize before acting', () => {
     render(
       <MemoryRouter>
         <PrototypeProvider>
@@ -48,11 +53,12 @@ describe('Representative flow semantics', () => {
       </MemoryRouter>,
     )
 
-    expect(screen.getByText('Verify first')).toBeInTheDocument()
-    expect(screen.getByText(/Reported shortages stay informational until Voucher verifies them/i)).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Barangay Supply Signal' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Stabilize Signal' })).toBeInTheDocument()
+    expect(screen.getByText(/Tap the center to stabilize/i)).toBeInTheDocument()
   })
 
-  it('updates scarcity status framing when a different resource is selected', async () => {
+  it('updates the live item label when a different resource is selected', async () => {
     const user = userEvent.setup()
 
     render(
@@ -65,23 +71,23 @@ describe('Representative flow semantics', () => {
 
     await user.click(screen.getByRole('button', { name: 'Packaging' }))
 
-    const signalSummary = screen.getByText(/4 peer reports within 3.0 km/i).closest('div')
-    expect(signalSummary).not.toBeNull()
-    expect(within(signalSummary as HTMLDivElement).getByText('Packaging')).toBeInTheDocument()
-    expect(within(signalSummary as HTMLDivElement).getByText('Stable')).toBeInTheDocument()
+    expect(screen.getByText(/Packaging · live barangay telemetry/i)).toBeInTheDocument()
+    expect(screen.getByText(/4 reports/i)).toBeInTheDocument()
   })
 
-  it('summarizes mesh relationship states without exposing identity by default', () => {
+  it('shows mesh posts with relationship cues without a long instruction block', () => {
     render(
       <MemoryRouter>
-        <MeshBoardPage />
+        <PrototypeProvider>
+          <MeshBoardPage />
+        </PrototypeProvider>
       </MemoryRouter>,
     )
 
-    const stateSection = screen.getByRole('region', { name: 'Read each supplier post by its consent state' })
-    expect(within(stateSection).getByText('Relationship states')).toBeInTheDocument()
-    expect(within(stateSection).getByText('Connected')).toBeInTheDocument()
-    expect(within(stateSection).getByText('Pending')).toBeInTheDocument()
-    expect(within(stateSection).getByText('Anonymous')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Barangay Supply Mesh' })).toBeInTheDocument()
+    expect(screen.getAllByText('Connected').length).toBeGreaterThan(0)
+    expect(screen.getAllByText('Pending').length).toBeGreaterThan(0)
+    expect(screen.getAllByText('Anonymous').length).toBeGreaterThan(0)
+    expect(screen.getByRole('button', { name: /Paano basahin ang nodes/i })).toBeInTheDocument()
   })
 })

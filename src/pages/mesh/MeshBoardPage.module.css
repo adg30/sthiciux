@@ -39,7 +39,7 @@
   padding: 12px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
-  background: var(--color-surface);
+  background: var(--color-surface-muted);
 }
 
 .stateItem p {
@@ -74,16 +74,18 @@
 
 .live {
   padding: 4px 8px;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-status-trust-border);
   border-radius: 999px;
   font-size: 0.625rem;
   font-weight: 700;
   text-transform: uppercase;
+  color: var(--color-status-trust-text);
+  background: var(--color-status-trust-bg);
 }
 
 .networkCanvas {
   position: relative;
-  height: 172px;
+  height: 190px;
   margin: 8px auto 0;
   max-width: 280px;
 }
@@ -104,55 +106,87 @@
 }
 
 .networkSvg line {
-  stroke: #b8b8b8;
+  stroke: var(--color-border-light);
   stroke-width: 0.8;
   stroke-dasharray: 2 2;
+  opacity: 0.7;
 }
 
 .networkSvg .hub {
-  fill: #111;
+  fill: var(--color-fill);
+}
+
+.youNode {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: var(--color-fill);
+  color: var(--color-text-inverse);
+  font-size: 0.5625rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  pointer-events: none;
 }
 
 .node {
   position: absolute;
   transform: translate(-50%, -50%);
-  width: 32px;
-  height: 32px;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 6px;
   display: grid;
   place-items: center;
-  border-radius: 50%;
-  background: #111;
-  color: #fff;
-  border: 2px solid #111;
+  border-radius: 999px;
   cursor: pointer;
-  font-size: 0.625rem;
+  font-size: 0.5625rem;
   font-weight: 700;
-  transition: transform 0.2s ease;
+  letter-spacing: 0.02em;
+  transition: transform var(--motion-base) ease;
+  z-index: 1;
+}
+
+.node span {
+  white-space: nowrap;
 }
 
 .node:hover,
 .node:focus-visible {
-  transform: translate(-50%, -50%) scale(1.12);
+  transform: translate(-50%, -50%) scale(1.1);
 }
 
 .node--active {
-  transform: translate(-50%, -50%) scale(1.16);
-  box-shadow: 0 0 0 5px #fff, 0 0 0 8px #111;
+  transform: translate(-50%, -50%) scale(1.14);
 }
 
 .node--connected {
-  box-shadow: 0 0 0 4px #fff, 0 0 0 6px #111;
+  background: var(--color-trust);
+  color: var(--color-text-inverse);
+  border: 2px solid var(--color-trust);
+  box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.18);
 }
 
 .node--pending {
-  background: #fff;
-  color: #111;
-  border-style: dashed;
+  background: var(--color-surface);
+  color: var(--color-scarcity);
+  border: 2px dashed var(--color-scarcity);
 }
 
 .node--anonymous {
-  background: #777;
-  border-color: #777;
+  background: var(--color-surface-muted);
+  color: var(--color-ink);
+  border: 2px solid var(--color-border);
+}
+
+.node--active.node--connected {
+  box-shadow: 0 0 0 5px rgba(20, 184, 166, 0.28);
+}
+
+.node--active.node--pending {
+  box-shadow: 0 0 0 5px rgba(245, 158, 11, 0.2);
 }
 
 .legend {
@@ -161,6 +195,7 @@
   gap: 14px;
   font-size: 0.625rem;
   color: var(--color-text-muted);
+  margin-top: 8px;
 }
 
 .legend span {
@@ -176,9 +211,32 @@
   border-radius: 50%;
 }
 
-.connectedKey { background: #111; box-shadow: 0 0 0 2px #fff, 0 0 0 3px #111; }
-.pendingKey { background: #fff; border: 1px dashed #111; }
-.hiddenKey { background: #777; }
+.connectedKey {
+  background: var(--color-trust);
+}
+
+.pendingKey {
+  background: var(--color-surface);
+  border: 1px dashed var(--color-scarcity);
+}
+
+.hiddenKey {
+  background: var(--color-ink);
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: center;
+}
+
+.emptyState p {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--color-text-muted);
+}
 
 .list {
   list-style: none;
@@ -202,17 +260,28 @@
   cursor: pointer;
   text-align: left;
   min-height: var(--touch-min);
-  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+  color: var(--color-text);
+  transition:
+    border-color var(--motion-fast) ease,
+    box-shadow var(--motion-fast) ease,
+    transform var(--motion-fast) ease;
 }
 
 .item--active {
-  border-width: 2px;
-  box-shadow: 0 3px 0 #111;
   transform: translateY(-1px);
+  box-shadow: var(--shadow-card);
 }
 
 .item--connected {
-  border-width: 2px;
+  border-color: var(--color-status-trust-border);
+}
+
+.item--pending {
+  border-color: var(--color-status-scarcity-border);
+}
+
+.item--anonymous {
+  border-color: var(--color-border);
 }
 
 .itemNumber {
@@ -221,42 +290,46 @@
   display: grid;
   place-items: center;
   flex: 0 0 auto;
-  border: 2px solid #111;
   border-radius: 50%;
-  background: #777;
-  color: #fff;
   font-size: 0.625rem;
   font-weight: 700;
 }
 
 .itemNumber--connected {
-  background: #111;
-  box-shadow: 0 0 0 3px #fff, 0 0 0 4px #111;
+  background: var(--color-trust);
+  color: var(--color-text-inverse);
+  border: 2px solid var(--color-trust);
 }
 
 .itemNumber--pending {
-  background: #fff;
-  color: #111;
-  border-style: dashed;
+  background: var(--color-surface);
+  color: var(--color-scarcity);
+  border: 2px dashed var(--color-scarcity);
+}
+
+.itemNumber--anonymous {
+  background: var(--color-surface-muted);
+  color: var(--color-ink);
+  border: 2px solid var(--color-border);
 }
 
 .thumb {
   width: 48px;
   height: 48px;
-  background: #d0d0d0;
+  background: var(--color-surface-muted);
   border-radius: var(--radius-sm);
   flex-shrink: 0;
   display: grid;
   place-items: center;
-  color: #555;
+  color: var(--color-ink);
   font-size: 0.5625rem;
   font-weight: 700;
 }
 
 .thumb--connected {
-  background: #fff;
-  border: 2px solid #111;
-  color: #111;
+  background: var(--color-status-trust-bg);
+  border: 2px solid var(--color-trust);
+  color: var(--color-trust);
   font-size: 1rem;
 }
 
@@ -264,7 +337,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
 }
 
 .name {
@@ -277,27 +350,33 @@
   color: var(--color-text-muted);
 }
 
-.fulfillmentNote {
-  font-size: 0.6875rem;
-  line-height: 1.4;
-  color: var(--color-text-muted);
-}
-
 .relationship {
   font-size: 0.6875rem;
   font-weight: 600;
 }
 
 .relationship--connected {
-  display: inline-flex;
-  width: fit-content;
-  padding: 3px 6px;
-  border-radius: 999px;
-  background: #111;
-  color: #fff;
+  color: var(--color-status-trust-text);
+}
+
+.relationship--pending {
+  color: var(--color-status-scarcity-text);
+}
+
+.relationship--anonymous {
+  color: var(--color-status-ink-text);
 }
 
 .plus {
   font-size: 1.25rem;
   font-weight: 300;
+  color: var(--color-text-muted);
 }
+
+.emptyCopy {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  text-align: center;
+}
+

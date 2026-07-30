@@ -3,9 +3,11 @@ import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { Button } from '../../components/ui/Button'
 import { ConnectionDiagram } from '../../components/ui/ConnectionDiagram'
 import { RedactionBar } from '../../components/ui/RedactionBar'
+import { StatusPill } from '../../components/ui/StatusPill'
 import { OTHER_PARTY_CONFIRM_DELAY_MS } from '../../data/constants'
 import { MOCK_SUPPLIERS } from '../../data/constants'
 import { usePrototype } from '../../context/prototype-context'
+import styles from './DiscoveryConfirmPage.module.css'
 
 type Phase = 'confirm' | 'waiting' | 'accepted' | 'declined'
 
@@ -31,9 +33,12 @@ export function DiscoveryConfirmPage() {
   if (phase === 'declined') {
     return (
       <div className="screen">
+        <p className="screen-kicker screen-kicker--critical">Request declined</p>
         <h1 className="screen-title">Request Declined</h1>
-        <ConnectionDiagram state="declined" otherName={supplier.name} />
-        <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <div className={`card ${styles.diagramCard} ${styles['diagramCard--critical']}`}>
+          <ConnectionDiagram state="declined" otherName={supplier.name} />
+        </div>
+        <div className={styles.actions}>
           <Button fullWidth onClick={() => navigate('/discovery/results')}>
             Try another Supplier
           </Button>
@@ -45,10 +50,14 @@ export function DiscoveryConfirmPage() {
   if (phase === 'accepted') {
     return (
       <div className="screen">
+        <p className="screen-kicker screen-kicker--trust">Mutual consent verified</p>
         <h1 className="screen-title">Connection Accepted</h1>
-        <ConnectionDiagram state="accepted" otherName={supplier.name} />
+        <div className={`card ${styles.diagramCard} ${styles['diagramCard--trust']}`}>
+          <ConnectionDiagram state="accepted" otherName={supplier.name} />
+        </div>
 
-        <div className="card">
+        <div className={`card ${styles.revealCard}`}>
+          <StatusPill tone="trust">Identity revealed</StatusPill>
           <RedactionBar revealed variant="photo" delay={0}>
             Revealed Photo
           </RedactionBar>
@@ -59,7 +68,7 @@ export function DiscoveryConfirmPage() {
           <RedactionBar revealed variant="line-medium" delay={450} />
         </div>
 
-        <div style={{ marginTop: 'auto' }}>
+        <div className={styles.actions}>
           <Button fullWidth onClick={() => navigate(`/discovery/revealed/${supplier.id}`)}>
             Message Supplier
           </Button>
@@ -70,16 +79,20 @@ export function DiscoveryConfirmPage() {
 
   return (
     <div className="screen">
+      <p className="screen-kicker">Mutual consent</p>
       <h1 className="screen-title">Confirm Request</h1>
-      <ConnectionDiagram state={phase === 'waiting' ? 'confirm-you' : 'pending'} otherName={supplier.name} />
+      <div className={`card ${styles.diagramCard}`}>
+        <ConnectionDiagram state={phase === 'waiting' ? 'confirm-you' : 'pending'} otherName={supplier.name} />
+      </div>
 
       {phase === 'waiting' && (
-        <p style={{ textAlign: 'center', fontSize: '0.8125rem', color: 'var(--color-text-muted)' }}>
-          You — Confirmed · Other business — Pending
-        </p>
+        <div className={styles.waitingBanner} role="status">
+          <StatusPill tone="signal">Pending</StatusPill>
+          <p>You — Confirmed · Other business — Pending</p>
+        </div>
       )}
 
-      <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 8 }}>
+      <div className={styles.actions}>
         {phase === 'confirm' && (
           <>
             <Button fullWidth onClick={() => setPhase('waiting')}>

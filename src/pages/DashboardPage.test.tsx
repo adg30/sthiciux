@@ -24,14 +24,14 @@ describe('DashboardPage audience narrative', () => {
 
     expect(
       screen.getByRole('heading', {
-        name: 'Trade with clarity, even when supply is uncertain.',
+        name: 'Trade clearly when supply is uncertain.',
       }),
     ).toBeInTheDocument()
 
-    await user.click(screen.getByRole('button', { name: 'Explore Voucher' }))
+    await user.click(screen.getByRole('button', { name: 'Enter KaUgnay' }))
 
     expect(sessionStorage.getItem(INTRO_SESSION_KEY)).toBe('true')
-    expect(screen.getByRole('heading', { name: 'Explore the Voucher network' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'KaUgnay' })).toBeInTheDocument()
   })
 
   it('links all four required prototype flows from the hub', () => {
@@ -39,32 +39,32 @@ describe('DashboardPage audience narrative', () => {
 
     renderDashboard()
 
-    expect(screen.getByRole('link', { name: /Find Trusted Suppliers/i })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: /Find suppliers/i })).toHaveAttribute(
       'href',
       '/discovery',
     )
-    expect(screen.getByRole('link', { name: /Understand Your Vouch Score/i })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: /Vouch Score/i })).toHaveAttribute(
       'href',
       '/vouch-score',
     )
-    expect(screen.getByRole('link', { name: /Verify Nearby Scarcity/i })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: /Supply signal/i })).toHaveAttribute(
       'href',
       '/scarcity',
     )
-    expect(screen.getByRole('link', { name: /Exchange Through the Mesh/i })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: /Mesh exchange/i })).toHaveAttribute(
       'href',
       '/mesh',
     )
   })
 
-  it('shows semantic status tags that preview how each flow works', () => {
+  it('shows short status tags that preview how each flow works', () => {
     sessionStorage.setItem(INTRO_SESSION_KEY, 'true')
 
     renderDashboard()
 
-    expect(screen.getByText('Trust-gated')).toBeInTheDocument()
-    expect(screen.getByText('Score-driven')).toBeInTheDocument()
-    expect(screen.getByText('Verified')).toBeInTheDocument()
-    expect(screen.getByText('Consent-based')).toBeInTheDocument()
+    expect(screen.getByText('Discover')).toBeInTheDocument()
+    expect(screen.getByText('Profile')).toBeInTheDocument()
+    expect(screen.getByText('Signal')).toBeInTheDocument()
+    expect(screen.getByText('Mesh')).toBeInTheDocument()
   })
 })

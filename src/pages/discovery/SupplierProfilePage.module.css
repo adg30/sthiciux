@@ -1,0 +1,80 @@
+.hero {
+  position: relative;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+}
+
+.heroOverlay {
+  position: absolute;
+  inset: auto 12px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.nodeBadge {
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(11, 15, 25, 0.72);
+  border: 1px solid var(--color-status-signal-border);
+  color: var(--color-status-signal-text);
+}
+
+.profileCard {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.metaRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+.confidence {
+  color: var(--color-status-trust-text);
+  font-weight: 600;
+}
+
+.availability {
+  margin: 10px 0 0;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--color-text-muted);
+}
+
+.gateHint {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-color: rgba(245, 158, 11, 0.35);
+  background: rgba(245, 158, 11, 0.06);
+}
+
+.gateHint strong {
+  font-size: 0.8125rem;
+  color: var(--color-status-scarcity-text);
+}
+
+.gateHint p {
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--color-text-muted);
+}
+
+.actions {
+  margin-top: auto;
+  padding-top: 8px;
+}

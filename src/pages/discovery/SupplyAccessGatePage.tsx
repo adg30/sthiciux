@@ -129,9 +129,27 @@ export function SupplyAccessGatePage() {
 
   const handleOffset = (1 - progress) * (TRACK_HEIGHT - HANDLE_SIZE)
 
+  const scorePercent = Math.min(100, Math.round((vouchScore / gateRequiredScore) * 100))
+
   return (
     <div className="screen">
+      <p className="screen-kicker">Trust verification</p>
       <h1 className="screen-title">Supply Access Gate</h1>
+
+      <div className={styles.scoreBar}>
+        <div className={styles.scoreBarHeader}>
+          <span>Your Vouch Score</span>
+          <span>
+            {vouchScore}/{gateRequiredScore} required
+          </span>
+        </div>
+        <div className={styles.scoreBarTrack}>
+          <div
+            className={`${styles.scoreBarFill} ${!canUnlock ? styles['scoreBarFill--insufficient'] : ''}`}
+            style={{ width: `${scorePercent}%` }}
+          />
+        </div>
+      </div>
 
       <div className={styles.gateArea}>
         <div
@@ -171,7 +189,9 @@ export function SupplyAccessGatePage() {
           </div>
         </div>
 
-        <p className={styles.instruction}>Drag to unlock</p>
+        <p className={styles.instruction}>
+          Drag to unlock · <kbd>↑</kbd> <kbd>↓</kbd> <kbd>Enter</kbd>
+        </p>
 
         {showInsufficient && (
           <div className={styles.insufficient} role="alert">

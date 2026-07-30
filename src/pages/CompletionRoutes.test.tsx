@@ -14,6 +14,8 @@ function renderRoute(element: React.ReactNode) {
         <Routes>
           <Route path="/feature" element={element} />
           <Route path="/" element={<div>Dashboard destination</div>} />
+          <Route path="/mesh" element={<div>Mesh destination</div>} />
+          <Route path="/discovery/results" element={<div>Discovery destination</div>} />
         </Routes>
       </PrototypeProvider>
     </MemoryRouter>,
@@ -36,17 +38,16 @@ describe('flow completion routes', () => {
     expect(screen.getByText('Dashboard destination')).toBeInTheDocument()
   })
 
-  it('returns to the Dashboard from the verified scarcity result', async () => {
+  it('reaches the verified scarcity result after stabilizing', () => {
     vi.useFakeTimers()
     renderRoute(<ScarcityFlowPage />)
 
-    fireEvent.click(screen.getByRole('button', { name: 'Inspect critical scarcity epicenter' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Stabilize Signal' }))
     act(() => {
       vi.advanceTimersByTime(STABILIZING_DELAY_MS)
     })
 
-    fireEvent.click(screen.getByRole('button', { name: 'Return to Dashboard' }))
-
-    expect(screen.getByText('Dashboard destination')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Verified problem' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Find suppliers' })).toBeInTheDocument()
   })
 })

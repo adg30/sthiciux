@@ -4,7 +4,7 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .item {
@@ -12,28 +12,54 @@
   align-items: center;
   gap: 12px;
   width: 100%;
-  padding: 12px;
-  background: var(--color-surface);
+  padding: 14px;
+  background: linear-gradient(145deg, var(--color-surface-elevated), var(--color-surface));
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   cursor: pointer;
   text-align: left;
   min-height: var(--touch-min);
+  transition:
+    border-color var(--motion-fast) ease,
+    transform var(--motion-fast) ease;
+}
+
+.item:hover {
+  border-color: rgba(6, 182, 212, 0.45);
+}
+
+.item:active {
+  transform: scale(0.99);
 }
 
 .thumb {
-  width: 48px;
-  height: 48px;
-  background: #d0d0d0;
+  width: 52px;
+  height: 52px;
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--color-signal);
 }
 
 .info {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
+  min-width: 0;
+}
+
+.infoTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
 }
 
 .meta {
@@ -41,6 +67,34 @@
   color: var(--color-text-muted);
 }
 
+.signals {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.nodeCode {
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-status-signal-text);
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--color-status-signal-bg);
+  border: 1px solid var(--color-status-signal-border);
+}
+
+.confidence {
+  font-size: 0.625rem;
+  font-weight: 600;
+  color: var(--color-status-trust-text);
+}
+
 .chevron {
-  color: var(--color-text-muted);
+  color: var(--color-signal);
+  font-size: 1.25rem;
+  line-height: 1;
+  flex-shrink: 0;
 }

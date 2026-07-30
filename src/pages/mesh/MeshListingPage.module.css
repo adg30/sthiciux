@@ -4,10 +4,20 @@
 }
 
 .hero {
-  height: 150px;
+  height: 140px;
   display: grid;
   place-items: center;
-  background: #d0d0d0;
+  background: var(--color-surface-muted);
+}
+
+.hero--connected {
+  background: radial-gradient(circle at 50% 30%, rgba(20, 184, 166, 0.18), transparent 60%),
+    var(--color-surface-muted);
+}
+
+.hero--pending {
+  background: radial-gradient(circle at 50% 30%, rgba(245, 158, 11, 0.12), transparent 60%),
+    var(--color-surface-muted);
 }
 
 .hero span {
@@ -15,39 +25,74 @@
   height: 64px;
   display: grid;
   place-items: center;
-  border: 2px solid #111;
+  border: 2px solid var(--color-trust);
   border-radius: 50%;
-  background: #fff;
+  background: var(--color-status-trust-bg);
   font-size: 1.5rem;
   font-weight: 700;
+  color: var(--color-trust);
+}
+
+.heroHidden {
+  width: auto !important;
+  height: auto !important;
+  padding: 8px 14px;
+  border-radius: 999px !important;
+  border: 1px dashed var(--color-border-light) !important;
+  background: var(--color-surface) !important;
+  font-size: 0.6875rem !important;
+  font-weight: 700 !important;
+  color: var(--color-ink) !important;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .content {
   padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.badge {
-  display: inline-block;
-  margin-bottom: 12px;
-  padding: 4px 8px;
-  border-radius: 999px;
-  font-size: 0.625rem;
+.businessName {
+  margin: 0;
+  font-size: 1.125rem;
   font-weight: 700;
+  color: var(--color-status-trust-text);
+}
+
+.details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 4px 0 0;
+}
+
+.details div {
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-muted);
+}
+
+.details dt {
+  font-size: 0.625rem;
+  color: var(--color-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
 
-.badge--connected {
-  background: #111;
-  color: #fff;
+.details dd {
+  margin: 4px 0 0;
+  font-size: 0.8125rem;
+  font-weight: 600;
 }
 
-.badge--pending {
-  border: 1px dashed #111;
-}
-
-.badge--anonymous {
-  background: #ddd;
+.consent {
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--color-text-muted);
 }
 
 .identity {
@@ -62,4 +107,11 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+.anonNote {
+  margin: 4px 0 0;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--color-text-muted);
 }

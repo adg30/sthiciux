@@ -27,3 +27,4 @@ dist-ssr
 /scripts
 /tmp
 /.tmp
+.env*

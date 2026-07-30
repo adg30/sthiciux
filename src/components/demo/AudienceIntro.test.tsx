@@ -4,17 +4,17 @@ import { describe, expect, it, vi } from 'vitest'
 import { AudienceIntro } from './AudienceIntro'
 
 describe('AudienceIntro', () => {
-  it('explains the three Voucher principles and continues into the prototype', async () => {
+  it('explains the three KaUgnay principles and continues into the prototype', async () => {
     const onContinue = vi.fn()
     const user = userEvent.setup()
 
     render(<AudienceIntro onContinue={onContinue} />)
 
-    expect(screen.getByText('Verified business trust')).toBeInTheDocument()
-    expect(screen.getByText('Barangay supply signals')).toBeInTheDocument()
-    expect(screen.getByText('Anonymous, consent-based exchange')).toBeInTheDocument()
+    expect(screen.getByText('Trust opens supply')).toBeInTheDocument()
+    expect(screen.getByText('Check signals first')).toBeInTheDocument()
+    expect(screen.getByText('Connect only with consent')).toBeInTheDocument()
 
-    await user.click(screen.getByRole('button', { name: 'Explore Voucher' }))
+    await user.click(screen.getByRole('button', { name: 'Enter KaUgnay' }))
 
     expect(onContinue).toHaveBeenCalledOnce()
   })

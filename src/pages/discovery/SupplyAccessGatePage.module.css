@@ -4,27 +4,72 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: 20px;
+}
+
+.scoreBar {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-muted);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.scoreBarHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.scoreBarTrack {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--color-surface);
+  overflow: hidden;
+}
+
+.scoreBarFill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--color-trust), var(--color-signal));
+  transition: width var(--motion-base) ease;
+}
+
+.scoreBarFill--insufficient {
+  background: linear-gradient(90deg, var(--color-scarcity), var(--color-critical));
 }
 
 .track {
   position: relative;
-  width: 80px;
+  width: 88px;
   height: 280px;
   border: 2px solid var(--color-border);
   border-radius: 999px;
-  background: var(--color-surface);
+  background: linear-gradient(180deg, var(--color-surface-elevated), var(--color-surface));
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 12px 0;
   touch-action: none;
   outline: none;
+  box-shadow: var(--shadow-card);
+}
+
+.track:focus-visible {
+  border-color: var(--color-signal);
 }
 
 .track--open {
-  border-color: #333;
-  gap: 8px;
+  border-color: var(--color-trust);
+  box-shadow: 0 0 24px rgba(20, 184, 166, 0.25);
 }
 
 .trackLine {
@@ -32,9 +77,10 @@
   top: 48px;
   bottom: 48px;
   width: 2px;
-  background: var(--color-border-light);
+  background: linear-gradient(180deg, var(--color-signal), var(--color-trust));
   left: 50%;
   transform: translateX(-50%);
+  opacity: 0.5;
 }
 
 .gatePanels {
@@ -50,9 +96,11 @@
 .gatePanels span {
   width: calc(50% - 3px);
   height: 100%;
-  border: 1px dashed var(--color-border-light);
-  background: rgba(224, 224, 224, 0.45);
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+  border: 1px dashed rgba(6, 182, 212, 0.35);
+  background: rgba(6, 182, 212, 0.08);
+  transition:
+    transform var(--motion-slow) cubic-bezier(0.4, 0, 0.2, 1),
+    opacity var(--motion-base) ease;
 }
 
 .gatePanels span:first-child {
@@ -81,11 +129,13 @@
   justify-content: center;
   font-size: 1.25rem;
   z-index: 2;
-  transition: transform 0.4s ease;
+  transition: transform var(--motion-base) ease;
+  color: var(--color-signal);
 }
 
 .lockTarget--open {
   transform: scale(1.1);
+  color: var(--color-trust);
 }
 
 .handle {
@@ -96,8 +146,8 @@
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  border: 2px solid var(--color-border);
-  background: var(--color-surface);
+  border: 2px solid var(--color-signal);
+  background: var(--color-surface-elevated);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -105,11 +155,14 @@
   z-index: 3;
   user-select: none;
   will-change: transform;
+  color: var(--color-signal);
+  box-shadow: 0 4px 16px rgba(6, 182, 212, 0.2);
 }
 
 .handle--dragging {
   cursor: grabbing;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 20px rgba(6, 182, 212, 0.35);
+  border-color: var(--color-trust);
 }
 
 .handle--snapping {
@@ -117,25 +170,40 @@
 }
 
 .instruction {
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   color: var(--color-text-muted);
   margin: 0;
+}
+
+.instruction kbd {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-muted);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: none;
+  color: var(--color-signal);
 }
 
 .insufficient {
   width: 100%;
   padding: 16px;
-  border: 1px dashed var(--color-border);
-  border-radius: var(--radius-sm);
-  background: var(--color-surface);
-  animation: fadeIn 0.2s ease;
-  border-width: 2px;
+  border: 1px dashed var(--color-status-scarcity-border);
+  border-radius: var(--radius-md);
+  background: var(--color-status-scarcity-bg);
+  animation: fadeIn var(--motion-base) ease;
 }
 
 .insufficientTitle {
   font-size: 0.875rem;
   font-weight: 600;
   margin: 0 0 8px;
+  color: var(--color-status-scarcity-text);
 }
 
 .insufficientScores {
@@ -148,15 +216,24 @@
   flex-wrap: wrap;
 }
 
+.insufficientScores strong {
+  color: var(--color-text);
+}
+
 .success {
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--color-text);
+  color: var(--color-status-trust-text);
   margin: 0;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  background: var(--color-status-trust-bg);
+  border: 1px solid var(--color-status-trust-border);
 }
 
 .fallback {
   margin-top: auto;
+  padding-top: 8px;
 }
 
 @keyframes fadeIn {
