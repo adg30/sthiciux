@@ -75,10 +75,10 @@ export function SupplierMessagePage() {
       </header>
 
       <div className={styles.securityNotice} role="status">
-        <span aria-hidden="true">◇</span>
+        <span className={styles.encryptedDot} aria-hidden="true" />
         <div>
-          <strong>Encrypted Comm-Link</strong>
-          <p>Messages use temporary session keys and disappear when this prototype session ends.</p>
+          <strong>Encrypted · session keys</strong>
+          <p>Only visible to both businesses after consent.</p>
         </div>
       </div>
 

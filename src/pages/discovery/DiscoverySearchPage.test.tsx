@@ -16,6 +16,7 @@ describe('DiscoverySearchPage', () => {
 
     expect(screen.getByText('Trust-gated')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Bakit may hidden suppliers/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Supply Signal/i })).toBeInTheDocument()
 
     await user.click(screen.getByRole('button', { name: /Bakit may hidden suppliers/i }))
 

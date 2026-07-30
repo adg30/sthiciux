@@ -24,7 +24,7 @@ export function IdentityRevealPage() {
 
       <div className={styles.hero}>
         <RedactionBar revealed={revealed} variant="photo" delay={0}>
-          Revealed Photo
+          Photo revealed
         </RedactionBar>
         <div className={styles.heroBadge}>
           <StatusPill tone="trust">Verified supplier</StatusPill>

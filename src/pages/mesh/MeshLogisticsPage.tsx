@@ -13,6 +13,7 @@ export function MeshLogisticsPage() {
   const item = MESH_ITEMS.find((candidate) => candidate.id === itemId) ?? MESH_ITEMS[0]
   const [pickup, setPickup] = useState('')
   const [time, setTime] = useState('')
+  const [note, setNote] = useState('')
 
   return (
     <div className="screen">
@@ -50,18 +51,18 @@ export function MeshLogisticsPage() {
 
       <div className="card">
         <label className={styles.label} htmlFor="pickup">
-          How will you be receiving this?
+          Pickup location
         </label>
         <input
           id="pickup"
           className={styles.input}
-          placeholder="Pickup location"
+          placeholder="Barangay hall loading bay"
           value={pickup}
           onChange={(e) => setPickup(e.target.value)}
           required
         />
         <label className={styles.label} htmlFor="time">
-          Time / day
+          Pickup time
         </label>
         <input
           id="time"
@@ -70,6 +71,17 @@ export function MeshLogisticsPage() {
           value={time}
           onChange={(e) => setTime(e.target.value)}
           required
+        />
+        <label className={styles.label} htmlFor="note">
+          Private note
+        </label>
+        <textarea
+          id="note"
+          className={styles.textarea}
+          placeholder="Visible only to both businesses…"
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+          rows={3}
         />
       </div>
 

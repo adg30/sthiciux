@@ -46,28 +46,27 @@ export function MeshVouchPage() {
       <h1 className="screen-title">Optional vouch</h1>
 
       <div className={`card ${styles.context}`}>
-        <StatusPill tone="trust">New connection</StatusPill>
+        <StatusPill tone="trust">Voluntary</StatusPill>
         <p className={styles.question}>Vouch for {item.business}?</p>
         <p className={styles.note}>
-          This optional step appears after your first verified exchange with a newly connected
-          business. Existing connections like Aling Rosa skip vouch and use Comm-Link instead.
+          They did not request this. Skipping has no penalty.
         </p>
       </div>
 
-      <label className="sr-only" htmlFor="vouch-text">
-        Write your vouch
+      <label className={styles.fieldLabel} htmlFor="vouch-text">
+        Reason (optional)
       </label>
       <textarea
         id="vouch-text"
         className={styles.textarea}
-        placeholder="Write your endorsement…"
+        placeholder="Describe what made this exchange trustworthy…"
         value={text}
         onChange={(e) => setText(e.target.value)}
-        rows={6}
+        rows={5}
       />
 
       <div className={styles.footer}>
-        <Button fullWidth onClick={handleSubmit} disabled={!text.trim()}>
+        <Button fullWidth onClick={handleSubmit}>
           Submit vouch
         </Button>
         <Button variant="secondary" fullWidth onClick={() => navigate('/')}>

@@ -169,6 +169,32 @@
   transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.handle--resist {
+  border-color: var(--color-scarcity);
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.35);
+}
+
+.lockGlyph,
+.handleGlyph {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.insufficientHint {
+  margin: 0 0 12px;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.insufficientActions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .instruction {
   font-size: 0.8125rem;
   font-weight: 600;

@@ -26,7 +26,7 @@ export function RedactionBar({
       <div
         className={`${styles.redaction__content} ${revealed ? styles['redaction__content--revealed'] : ''}`}
       >
-        {children ?? (isPhoto ? 'Revealed Photo' : '████████')}
+        {children ?? (isPhoto ? 'Photo revealed' : '████████')}
       </div>
       <div
         className={`${styles.redaction__bar} ${revealed ? styles['redaction__bar--revealed'] : ''}`}

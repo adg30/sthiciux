@@ -12,9 +12,9 @@ export function CommLinkInboxPage() {
       <h1 className="screen-title">Comm-Link</h1>
 
       <div className={styles.security}>
-        <span className={styles.securityIcon} aria-hidden="true">◇</span>
+        <span className={styles.securityIcon} aria-hidden="true" />
         <div>
-          <strong>Encrypted Comm-Link</strong>
+          <strong>Encrypted · session keys</strong>
           <p>Only mutually revealed businesses can message you here.</p>
         </div>
       </div>

@@ -36,6 +36,21 @@ export function DiscoverySearchPage() {
         </p>
       </SignalTip>
 
+      <button
+        type="button"
+        className={styles.signalCard}
+        onClick={() => navigate('/scarcity')}
+      >
+        <span className={styles.signalCardKicker}>Barangay map</span>
+        <span className={styles.signalCardTitle}>Supply Signal</span>
+        <span className={styles.signalCardBody}>
+          Check local scarcity reports before you search suppliers.
+        </span>
+        <span className={styles.signalCardCta} aria-hidden="true">
+          Open map →
+        </span>
+      </button>
+
       <div className={styles.searchWrap}>
         <label className="sr-only" htmlFor="supplier-search">
           Search suppliers and services

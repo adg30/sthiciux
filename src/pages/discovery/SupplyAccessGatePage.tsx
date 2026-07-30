@@ -101,11 +101,19 @@ export function SupplyAccessGatePage() {
     if (unlocked) return
     if (e.key === 'ArrowUp') {
       e.preventDefault()
-      setProgress((p) => Math.min(maxProgress, p + (canUnlock ? 0.15 : 0.08)))
+      setProgress((p) => {
+        const next = Math.min(maxProgress, p + (canUnlock ? 0.15 : 0.08))
+        progressRef.current = next
+        return next
+      })
     }
     if (e.key === 'ArrowDown') {
       e.preventDefault()
-      setProgress((p) => Math.max(0, p - 0.15))
+      setProgress((p) => {
+        const next = Math.max(0, p - 0.15)
+        progressRef.current = next
+        return next
+      })
     }
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault()
@@ -171,13 +179,15 @@ export function SupplyAccessGatePage() {
             <span />
           </div>
           <div className={`${styles.lockTarget} ${unlocked ? styles['lockTarget--open'] : ''}`}>
-            <span aria-hidden="true">{unlocked ? '🔓' : '🔒'}</span>
+            <span className={styles.lockGlyph} aria-hidden="true">
+              {unlocked ? '○' : '●'}
+            </span>
           </div>
 
           <div className={styles.trackLine} aria-hidden="true" />
 
           <div
-            className={`${styles.handle} ${dragging ? styles['handle--dragging'] : ''} ${snapping ? styles['handle--snapping'] : ''}`}
+            className={`${styles.handle} ${dragging ? styles['handle--dragging'] : ''} ${snapping ? styles['handle--snapping'] : ''} ${!canUnlock && progress > 0.2 ? styles['handle--resist'] : ''}`}
             style={{ transform: `translateY(${handleOffset}px)` }}
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}
@@ -185,7 +195,9 @@ export function SupplyAccessGatePage() {
             onPointerCancel={handlePointerUp}
             role="presentation"
           >
-            <span aria-hidden="true">🔒</span>
+            <span className={styles.handleGlyph} aria-hidden="true">
+              ▢
+            </span>
           </div>
         </div>
 
@@ -195,15 +207,27 @@ export function SupplyAccessGatePage() {
 
         {showInsufficient && (
           <div className={styles.insufficient} role="alert">
-            <p className={styles.insufficientTitle}>Higher trust is required to access this supplier.</p>
+            <p className={styles.insufficientTitle}>Higher trust needed</p>
             <p className={styles.insufficientScores}>
-              Current score: <strong>{vouchScore}/100</strong>
-              <span aria-hidden="true">→</span>
-              Required score: <strong>{gateRequiredScore}/100</strong>
+              Current: <strong>{vouchScore}/100</strong>
+              <span aria-hidden="true">·</span>
+              Required: <strong>{gateRequiredScore}/100</strong>
             </p>
-            <Button variant="secondary" fullWidth onClick={() => navigate('/vouch-actions')}>
-              See how to raise the score
-            </Button>
+            <p className={styles.insufficientHint}>
+              The gate snapped back. Raise your Vouch Score, or try a lower-tier supplier.
+            </p>
+            <div className={styles.insufficientActions}>
+              <Button fullWidth onClick={() => navigate('/vouch-actions')}>
+                Build trust
+              </Button>
+              <Button
+                variant="secondary"
+                fullWidth
+                onClick={() => navigate('/discovery/supplier/s1')}
+              >
+                Try lower-tier supplier
+              </Button>
+            </div>
           </div>
         )}
 

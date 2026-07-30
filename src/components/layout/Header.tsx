@@ -41,10 +41,10 @@ export function Header({ showBack, title, onBack }: HeaderProps) {
         type="button"
         className={styles.header__brand}
         onClick={() => navigate('/')}
-        aria-label="KaUgnay — return to Dashboard"
+        aria-label="KaUgnay Home — go to Dashboard"
       >
         <span className={styles.header__wordmark}>KaUgnay</span>
-        <span className={styles.header__network}>Barangay Supply Network</span>
+        <span className={styles.header__network}>Home · Dashboard</span>
       </button>
       <div className={styles.header__badge} aria-label="MSME node">
         MSME

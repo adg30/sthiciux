@@ -59,7 +59,7 @@ export function DiscoveryConfirmPage() {
         <div className={`card ${styles.revealCard}`}>
           <StatusPill tone="trust">Identity revealed</StatusPill>
           <RedactionBar revealed variant="photo" delay={0}>
-            Revealed Photo
+            Photo revealed
           </RedactionBar>
           <RedactionBar revealed variant="name" delay={150}>
             {supplier.name}
