@@ -1,11 +1,13 @@
 import { useNavigate } from 'react-router-dom'
 import { RedactionBar } from '../../components/ui/RedactionBar'
 import { StatusPill } from '../../components/ui/StatusPill'
-import { MOCK_SUPPLIERS } from '../../data/constants'
+import { isSupplierAccessible, MOCK_SUPPLIERS } from '../../data/constants'
+import { usePrototype } from '../../context/prototype-context'
 import styles from './DiscoveryResultsPage.module.css'
 
 export function DiscoveryResultsPage() {
   const navigate = useNavigate()
+  const { vouchScore } = usePrototype()
 
   return (
     <div className="screen">
@@ -17,39 +19,46 @@ export function DiscoveryResultsPage() {
       </p>
 
       <ul className={styles.list}>
-        {MOCK_SUPPLIERS.map((supplier) => (
-          <li key={supplier.id}>
-            <button
-              type="button"
-              className={styles.item}
-              onClick={() => navigate(`/discovery/supplier/${supplier.id}`)}
-            >
-              <div className={styles.thumb} aria-hidden="true">
-                <span>{supplier.nodeCode}</span>
-              </div>
-              <div className={styles.info}>
-                <div className={styles.infoTop}>
-                  <RedactionBar revealed={false} variant="line-medium" />
-                  <StatusPill
-                    tone={supplier.trustState === 'gated' ? 'scarcity' : 'trust'}
-                  >
-                    {supplier.trustState === 'gated' ? 'Gated' : 'Available'}
-                  </StatusPill>
+        {MOCK_SUPPLIERS.map((supplier) => {
+          const accessible = isSupplierAccessible(supplier, vouchScore)
+
+          return (
+            <li key={supplier.id}>
+              <button
+                type="button"
+                className={styles.item}
+                onClick={() => navigate(`/discovery/supplier/${supplier.id}`)}
+              >
+                <div
+                  className={`${styles.thumb} ${accessible ? styles['thumb--available'] : styles['thumb--gated']}`}
+                  aria-hidden="true"
+                >
+                  <span className={styles.thumbDot} />
+                  <span>{supplier.nodeCode}</span>
                 </div>
-                <span className={styles.meta}>
-                  {supplier.category} · {supplier.distance}
+                <div className={styles.info}>
+                  <div className={styles.infoTop}>
+                    <RedactionBar revealed={false} variant="line-medium" />
+                    <StatusPill tone={accessible ? 'trust' : 'scarcity'}>
+                      {accessible ? 'Available' : 'Gated'}
+                    </StatusPill>
+                  </div>
+                  <span className={styles.meta}>
+                    {supplier.category} · {supplier.distance}
+                    {!accessible ? ` · needs ${supplier.requiredScore}+` : ''}
+                  </span>
+                  <div className={styles.signals}>
+                    <span className={styles.nodeCode}>{supplier.nodeCode}</span>
+                    <span className={styles.confidence}>{supplier.matchConfidence}</span>
+                  </div>
+                </div>
+                <span className={styles.chevron} aria-hidden="true">
+                  ›
                 </span>
-                <div className={styles.signals}>
-                  <span className={styles.nodeCode}>{supplier.nodeCode}</span>
-                  <span className={styles.confidence}>{supplier.matchConfidence}</span>
-                </div>
-              </div>
-              <span className={styles.chevron} aria-hidden="true">
-                ›
-              </span>
-            </button>
-          </li>
-        ))}
+              </button>
+            </li>
+          )
+        })}
       </ul>
     </div>
   )

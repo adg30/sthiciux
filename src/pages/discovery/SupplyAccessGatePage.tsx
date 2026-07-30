@@ -9,6 +9,7 @@ import {
 import { useNavigate, useParams } from 'react-router-dom'
 import { Button } from '../../components/ui/Button'
 import { usePrototype } from '../../context/prototype-context'
+import { MOCK_SUPPLIERS } from '../../data/constants'
 import styles from './SupplyAccessGatePage.module.css'
 
 const TRACK_HEIGHT = 280
@@ -18,7 +19,9 @@ const MAX_LOCKED_PROGRESS = 0.55
 export function SupplyAccessGatePage() {
   const navigate = useNavigate()
   const { supplierId } = useParams()
-  const { vouchScore, gateRequiredScore } = usePrototype()
+  const { vouchScore } = usePrototype()
+  const supplier = MOCK_SUPPLIERS.find((s) => s.id === supplierId) ?? MOCK_SUPPLIERS[0]
+  const gateRequiredScore = supplier.requiredScore
   const canUnlock = vouchScore >= gateRequiredScore
 
   const trackRef = useRef<HTMLDivElement>(null)

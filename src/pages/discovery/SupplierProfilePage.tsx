@@ -2,17 +2,22 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { Button } from '../../components/ui/Button'
 import { RedactionBar } from '../../components/ui/RedactionBar'
 import { StatusPill } from '../../components/ui/StatusPill'
-import { MOCK_SUPPLIERS } from '../../data/constants'
+import { isSupplierAccessible, MOCK_SUPPLIERS } from '../../data/constants'
+import { usePrototype } from '../../context/prototype-context'
 import styles from './SupplierProfilePage.module.css'
 
 export function SupplierProfilePage() {
   const { supplierId } = useParams()
   const navigate = useNavigate()
+  const { vouchScore } = usePrototype()
   const supplier = MOCK_SUPPLIERS.find((s) => s.id === supplierId) ?? MOCK_SUPPLIERS[0]
+  const accessible = isSupplierAccessible(supplier, vouchScore)
 
   return (
     <div className="screen">
-      <p className="screen-kicker screen-kicker--caution">Identity protected</p>
+      <p className={`screen-kicker ${accessible ? 'screen-kicker--trust' : 'screen-kicker--caution'}`}>
+        {accessible ? 'Access path open' : 'Identity protected'}
+      </p>
       <h1 className="screen-title">Supplier Profile</h1>
 
       <div className={styles.hero}>
@@ -20,8 +25,8 @@ export function SupplierProfilePage() {
           Blocked Photo
         </RedactionBar>
         <div className={styles.heroOverlay}>
-          <StatusPill tone={supplier.trustState === 'gated' ? 'scarcity' : 'trust'}>
-            {supplier.trustState === 'gated' ? 'Trust gate required' : 'Accessible now'}
+          <StatusPill tone={accessible ? 'trust' : 'scarcity'}>
+            {accessible ? 'Accessible now' : 'Trust gate required'}
           </StatusPill>
           <span className={styles.nodeBadge}>{supplier.nodeCode}</span>
         </div>
@@ -43,10 +48,11 @@ export function SupplierProfilePage() {
       </div>
 
       <div className={`card ${styles.gateHint}`}>
-        <strong>Access gate ahead</strong>
+        <strong>{accessible ? 'Ready for access gate' : 'Higher trust needed'}</strong>
         <p>
-          Your Vouch Score determines whether you can unlock this supplier path.
-          Identity stays hidden until mutual consent.
+          {accessible
+            ? 'Your Vouch Score meets this supplier’s requirement. Identity still stays hidden until mutual consent.'
+            : `This path needs a Vouch Score of ${supplier.requiredScore}+. Your current score is ${vouchScore}.`}
         </p>
       </div>
 

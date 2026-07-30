@@ -142,17 +142,21 @@ export const VOUCH_ACTIONS = [
   },
 ]
 
-export type SupplierTrustState = 'gated' | 'available'
 export interface MockSupplier {
   id: string
   category: string
   distance: string
   name: string
   barangay: string
-  trustState: SupplierTrustState
+  /** Minimum Vouch Score needed to attempt this supplier's access gate. */
+  requiredScore: number
   availabilityNote: string
   nodeCode: string
   matchConfidence: string
+}
+
+export function isSupplierAccessible(supplier: Pick<MockSupplier, 'requiredScore'>, score: number): boolean {
+  return score >= supplier.requiredScore
 }
 
 export const MOCK_SUPPLIERS = [
@@ -162,7 +166,7 @@ export const MOCK_SUPPLIERS = [
     distance: '1.2 km',
     name: 'Barangay Fresh Supply Co.',
     barangay: 'Poblacion',
-    trustState: 'available',
+    requiredScore: 0,
     availabilityNote: 'Restocks from nearby verified vendors every Tuesday and Friday.',
     nodeCode: 'NX-04',
     matchConfidence: '92% match',
@@ -173,7 +177,7 @@ export const MOCK_SUPPLIERS = [
     distance: '2.0 km',
     name: 'Luzon Oil Traders',
     barangay: 'Market zone',
-    trustState: 'gated',
+    requiredScore: GATE_REQUIRED_SCORE,
     availabilityNote: 'Higher-volume stock requires stronger verified trust before identity reveal.',
     nodeCode: 'NX-11',
     matchConfidence: '88% match',
@@ -184,7 +188,7 @@ export const MOCK_SUPPLIERS = [
     distance: '3.5 km',
     name: 'Metro Pack Solutions',
     barangay: 'South cluster',
-    trustState: 'gated',
+    requiredScore: SCORE_PRESETS.limited.score,
     availabilityNote: 'Shared through trust-gated discovery to reduce unnecessary identity exposure.',
     nodeCode: 'NX-19',
     matchConfidence: '81% match',

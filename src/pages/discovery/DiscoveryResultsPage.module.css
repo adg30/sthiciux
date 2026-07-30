@@ -41,10 +41,40 @@
   flex-shrink: 0;
   display: grid;
   place-items: center;
+  position: relative;
   font-size: 0.625rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   color: var(--color-signal);
+}
+
+.thumbDot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-text-muted);
+  box-shadow: 0 0 0 2px var(--color-surface-muted);
+}
+
+.thumb--available {
+  border-color: var(--color-status-trust-border);
+}
+
+.thumb--available .thumbDot {
+  background: var(--color-trust);
+  box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.2);
+}
+
+.thumb--gated {
+  border-color: var(--color-status-scarcity-border);
+}
+
+.thumb--gated .thumbDot {
+  background: var(--color-scarcity);
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
 }
 
 .info {
